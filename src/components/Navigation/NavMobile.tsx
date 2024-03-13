@@ -7,8 +7,6 @@ import { Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-import ThemeToggleButton from "../Button/ThemeToggleButton";
-import SocialsList from "../SocialsList/SocialsList";
 
 export interface NavMobileProps {
   data: Menu[];
@@ -164,16 +162,16 @@ const NavMobile: React.FC<NavMobileProps> = ({ data, onClickClose }) => {
         <div className="mt-5 flex flex-col text-sm text-slate-600 dark:text-slate-300">
           <span>업무를 더욱 편하게</span>
 
-          <div className="mt-4 flex items-center justify-between">
+          {/* <div className="mt-4 flex items-center justify-between">
             <SocialsList itemClass="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full text-xl" />
             <ThemeToggleButton />
-          </div>
+          </div> */}
         </div>
         <span className="absolute right-2 top-2 p-1">
           <ButtonClose onClick={onClickClose} />
         </span>
 
-        <div className="mt-5">{renderSearchForm()}</div>
+        {/* <div className="mt-5">{renderSearchForm()}</div> */}
       </div>
       <ul className="flex flex-col space-y-1 px-2 py-6">
         {data.map(_renderItem)}
