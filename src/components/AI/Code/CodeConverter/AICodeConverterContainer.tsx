@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useMenu from "@/hooks/useMenu";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { lang } from "@/lib/data/convertLang";
 import { codeConvertSchema } from "@/lib/validation/ai/code/codeConverter/codeConverterSchema";
 import { codeConvertGenerate } from "@/service/ai/code/codeConvert/codeConvert";
@@ -24,6 +25,7 @@ import { z } from "zod";
 interface AICodeConverterContainerProps {}
 
 function AICodeConverterContainer({}: AICodeConverterContainerProps) {
+  useRequireAuth({ forwardUrl: "/ai/code/codeconvert" });
   const { title, content } = useMenu();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [codeInput, setCodeInput] = useState<string>("");

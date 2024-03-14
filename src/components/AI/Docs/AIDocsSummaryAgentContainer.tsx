@@ -6,6 +6,7 @@ import withDragAndDropFiles, {
   DragAndDropFilesWrappedProps,
 } from "@/hoc/withDragAndDropFiles";
 import useMenu from "@/hooks/useMenu";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { cn } from "@/lib/utils/utils";
 import { docsSummaryAgent } from "@/service/ai/docs/summary";
 import { Message } from "ai/react";
@@ -33,6 +34,7 @@ function AIDocsSummaryAgentContainer({
   acceptedFileType,
   multiple = true,
 }: AIDocsSummaryAgentContainerProps) {
+  useRequireAuth({ forwardUrl: "/ai/docs/summary-agent" });
   const { title, content } = useMenu();
   const [loading, setLoading] = useState<boolean>(false);
   const [completedFile, setCompletedFile] = useState<boolean>(false);

@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import useMenu from "@/hooks/useMenu";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { framework, getLangByFramework } from "@/lib/data/framework";
 import { cn } from "@/lib/utils/utils";
 import { apiGenSchema } from "@/lib/validation/ai/code/apiGen/apiGenSchema";
@@ -33,6 +34,7 @@ import { z } from "zod";
 interface AIApiGenContainerProps {}
 
 function AIApiGenContainer({}: AIApiGenContainerProps) {
+  useRequireAuth({ forwardUrl: "/ai/code/apigen" });
   const { title, content } = useMenu();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [generatedCode, setGeneratedCode] = useState<string>("");

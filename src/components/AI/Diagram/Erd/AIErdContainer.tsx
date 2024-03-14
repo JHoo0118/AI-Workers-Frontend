@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormItem, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import useMenu from "@/hooks/useMenu";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { CryptoUtils } from "@/lib/utils/crypto";
 import { erdSchema } from "@/lib/validation/ai/diagram/erd/erdSchema";
 import { erdGenerate } from "@/service/ai/diagram/erd/erd";
@@ -18,6 +19,7 @@ import { z } from "zod";
 interface AIErdContainerProps {}
 
 function AIErdContainer({}: AIErdContainerProps) {
+  useRequireAuth({ forwardUrl: "/ai/diagram/erd" });
   const { title, content } = useMenu();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);

@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useMenu from "@/hooks/useMenu";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { framework, getLangByFramework } from "@/lib/data/framework";
 import { cn } from "@/lib/utils/utils";
 import { sqlToEntitySchema } from "@/lib/validation/ai/code/sqlEntity/sqlEntitySchema";
@@ -32,6 +33,7 @@ import { z } from "zod";
 interface AISqlEntityContainerProps {}
 
 function AISqlEntityContainer({}: AISqlEntityContainerProps) {
+  useRequireAuth({ forwardUrl: "/ai/code/sqlentity" });
   const { title, content } = useMenu();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [sqlInput, setSqlInput] = useState<string>("");

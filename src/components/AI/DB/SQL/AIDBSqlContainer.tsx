@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ACCESS_TOKEN } from "@/const/const";
 import useMenu from "@/hooks/useMenu";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { isAuthenticated } from "@/lib/utils/auth";
 import { cn } from "@/lib/utils/utils";
 import { refreshTokens } from "@/service/auth/auth";
@@ -17,6 +18,7 @@ import { useEffect, useRef, useState } from "react";
 interface AIDBSqlContainerProps {}
 
 function AIDBSqlContainer({}: AIDBSqlContainerProps) {
+  useRequireAuth({ forwardUrl: "/ai/db/sql" });
   const { title, content } = useMenu();
   const [loading, setLoading] = useState<boolean>(false);
   const [isStreaming, setIsStreaming] = useState<boolean>(false);

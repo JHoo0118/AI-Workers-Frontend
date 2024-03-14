@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormItem, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import useMenu from "@/hooks/useMenu";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { CryptoUtils } from "@/lib/utils/crypto";
 import { sequenceDiagramSchema } from "@/lib/validation/ai/diagram/seq/seqDiagramSchema";
 import { sequenceDiagramGenerate } from "@/service/ai/diagram/seq/seq";
@@ -18,6 +19,7 @@ import { z } from "zod";
 interface AISequenceDiagramContainerProps {}
 
 function AISequenceDiagramContainer({}: AISequenceDiagramContainerProps) {
+  useRequireAuth({ forwardUrl: "/ai/diagram/seq" });
   const { title, content } = useMenu();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
