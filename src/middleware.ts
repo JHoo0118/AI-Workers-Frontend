@@ -63,7 +63,6 @@ import { jwtVerify } from "jose";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { ACCESS_TOKEN } from "./const/const";
-import { deleteTokens } from "./lib/utils/auth";
 
 async function verifyAccessToken(accessToken: string): Promise<boolean> {
   const accessTokenKey = process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY;
@@ -116,33 +115,33 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(basePath, origin));
   }
 
-  const loginUrl = new URL(`${basePath}/login`, origin);
+  // const loginUrl = new URL(`${basePath}/login`, origin);
   // Protected paths requiring authentication
-  if (pathname.startsWith("/ai")) {
-    if (!accessToken) {
-      deleteTokens();
-      const forwardUrl = req.nextUrl.clone();
-      forwardUrl.pathname = "/login";
-      forwardUrl.searchParams.set("forwardUrl", req.nextUrl.pathname);
+  // if (pathname.startsWith("/ai")) {
+  //   if (!accessToken) {
+  //     deleteTokens();
+  //     const forwardUrl = req.nextUrl.clone();
+  //     forwardUrl.pathname = "/login";
+  //     forwardUrl.searchParams.set("forwardUrl", req.nextUrl.pathname);
 
-      return NextResponse.redirect(forwardUrl);
-    }
+  //     return NextResponse.redirect(forwardUrl);
+  //   }
 
-    // const isAccessTokenValid = await verifyAccessToken(accessToken);
-    // if (!isAccessTokenValid) {
-    //   const email = jwt.decode(accessToken)?.sub?.toString();
-    //   const refreshToken = cookieStore.get(REFRESH_TOKEN)?.value;
-    //   if (
-    //     !email ||
-    //     !refreshToken ||
-    //     !(await refreshTokens(email, refreshToken))
-    //   ) {
-    //     console.log(3);
-    //     deleteTokens();
-    //     return NextResponse.redirect(loginUrl);
-    //   }
-    // }
-  }
+  // const isAccessTokenValid = await verifyAccessToken(accessToken);
+  // if (!isAccessTokenValid) {
+  //   const email = jwt.decode(accessToken)?.sub?.toString();
+  //   const refreshToken = cookieStore.get(REFRESH_TOKEN)?.value;
+  //   if (
+  //     !email ||
+  //     !refreshToken ||
+  //     !(await refreshTokens(email, refreshToken))
+  //   ) {
+  //     console.log(3);
+  //     deleteTokens();
+  //     return NextResponse.redirect(loginUrl);
+  //   }
+  // }
+  // }
 
   return NextResponse.next();
 }

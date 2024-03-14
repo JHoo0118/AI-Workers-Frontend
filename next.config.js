@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   experimental: {
-    proxyTimeout: 1000 * 120,
+    proxyTimeout: 1000 * 180,
   },
   httpAgentOptions: {
     keepAlive: true,
