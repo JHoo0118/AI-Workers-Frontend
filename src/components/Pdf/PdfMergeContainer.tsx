@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils/utils";
 import { pdfMerge } from "@/service/pdf/pdf";
 import { PdfMergeOutputs } from "@/types/pdf-types";
 import { Loader2 } from "lucide-react";
+import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
@@ -34,6 +35,7 @@ function PdfMergeContainer({
   removeFile,
   acceptedFileType,
 }: PdfMergeContainerProps) {
+  const locale = useLocale();
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const { title, content } = useMenu();
@@ -47,7 +49,7 @@ function PdfMergeContainer({
       {
         loading: "병합 중...",
         success: (data: PdfMergeOutputs) => {
-          router.push(`/pdf/merge/result/${data.filename}`);
+          router.push(`/${locale}/pdf/merge/result/${data.filename}`);
           return <b>PDF가 병합되었습니다.</b>;
         },
         error: (error) => <b>{error}</b>,
@@ -58,7 +60,7 @@ function PdfMergeContainer({
   return (
     <div className="relative flex h-full justify-center">
       {files?.length === 0 && (
-        <div className="flex flex-col items-center p-10">
+        <div className="flex flex-col items-center overflow-x-hidden py-10">
           <h1 className="text-4xl">{title}</h1>
           <p className="leading-7 [&:not(:first-child)]:mt-6">{content}</p>
           <Button
@@ -88,7 +90,7 @@ function PdfMergeContainer({
         acceptedFileType={acceptedFileType}
         loading={loading}
         sideBarContent={
-          <div className="flex h-full flex-col justify-between px-4 py-2">
+          <div className="flex h-full flex-col justify-between py-2">
             <div>
               <h1 className="mb-6 mt-2 text-3xl">{title}</h1>
               <Card className="rounded-none border-teal-400 bg-teal-400 text-black">

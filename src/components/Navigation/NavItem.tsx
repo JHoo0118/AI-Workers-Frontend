@@ -3,6 +3,7 @@ import { Menu } from "@/lib/data/menu";
 import { Route } from "@/routers/types";
 import { Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "lucide-react";
+import { useLocale } from "next-intl";
 import Link from "next/link";
 import { FC, Fragment, useState } from "react";
 import EwImage from "../EwImage/NcImage";
@@ -39,6 +40,7 @@ const recentPosts = [
 ];
 
 const NavItem: FC<NavItemProps> = ({ menu }) => {
+  const locale = useLocale();
   const [menuCurrentHovers, setMenuCurrentHovers] = useState<string[]>([]);
 
   const onMouseEnterMenu = (id: string) => {
@@ -258,7 +260,7 @@ const NavItem: FC<NavItemProps> = ({ menu }) => {
       <Link
         className="text-neutral-6000 flex items-center rounded-md px-4 py-2 font-normal hover:bg-neutral-100 hover:text-neutral-700 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
         href={{
-          pathname: item.href || undefined,
+          pathname: `/${locale}${item.href}` || undefined,
         }}
       >
         {item.title}
@@ -277,9 +279,9 @@ const NavItem: FC<NavItemProps> = ({ menu }) => {
     return (
       <div className="flex h-20 flex-shrink-0 items-center">
         <Link
-          className="inline-flex items-center rounded-full px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 lg:text-[15px] xl:px-5 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+          className="inline-flex items-center rounded-full px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-200 lg:text-[15px] xl:px-5"
           href={{
-            pathname: item.href || undefined,
+            pathname: `/${locale}${item.href}` || undefined,
           }}
         >
           {item.title}

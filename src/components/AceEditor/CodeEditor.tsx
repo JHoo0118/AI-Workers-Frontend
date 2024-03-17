@@ -39,6 +39,7 @@ import "ace-builds/src-noconflict/theme-chrome";
 import "ace-builds/src-noconflict/theme-tomorrow_night_eighties";
 import { useTheme } from "next-themes";
 
+export const dynamic = "force-dynamic";
 interface CodeEditorProps {
   className?: string | undefined;
   value?: string;

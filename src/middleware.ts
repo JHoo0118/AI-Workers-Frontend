@@ -59,89 +59,43 @@
 //   return NextResponse.next();
 // }
 
-import { jwtVerify } from "jose";
+import createMiddleware from "next-intl/middleware";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { locales, pathnames } from "./config";
 import { ACCESS_TOKEN } from "./const/const";
+import { deleteTokens } from "./lib/utils/auth";
 
-async function verifyAccessToken(accessToken: string): Promise<boolean> {
-  const accessTokenKey = process.env.NEXT_PUBLIC_ACCESS_TOKEN_KEY;
-  if (!accessTokenKey) {
-    console.error("Access token key is not defined in environment variables.");
-    return false;
-  }
-
-  try {
-    await jwtVerify(accessToken, new TextEncoder().encode(accessTokenKey), {
-      algorithms: ["HS256"],
-    });
-    return true;
-  } catch (error) {
-    console.error("토큰 인증 실패:", error);
-    return false;
-  }
-}
-
-async function refreshTokens(
-  email: string,
-  refreshToken: string,
-): Promise<boolean> {
-  try {
-    const response = await fetch("/py-api/auth/refresh-tokens", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, refreshToken }),
-    });
-
-    return response.ok;
-  } catch (error) {
-    console.error("토큰 갱신 실패:", error);
-    return false;
-  }
-}
+export default createMiddleware({
+  defaultLocale: "ko",
+  locales,
+  pathnames,
+  localePrefix: "as-needed",
+});
 
 export async function middleware(req: NextRequest) {
   const { pathname, origin, basePath } = req.nextUrl;
   const cookieStore = req.cookies;
   const accessToken = cookieStore.get(ACCESS_TOKEN)?.value;
-
-  console.log(pathname);
+  const locale = "ko";
   if (
     accessToken &&
-    (pathname.startsWith("/login") || pathname.startsWith("/signup"))
+    (pathname.indexOf("/login") !== -1 || pathname.indexOf("/signup") !== -1)
   ) {
     return NextResponse.redirect(new URL(basePath, origin));
   }
-
   // const loginUrl = new URL(`${basePath}/login`, origin);
   // Protected paths requiring authentication
-  // if (pathname.startsWith("/ai")) {
-  //   if (!accessToken) {
-  //     deleteTokens();
-  //     const forwardUrl = req.nextUrl.clone();
-  //     forwardUrl.pathname = "/login";
-  //     forwardUrl.searchParams.set("forwardUrl", req.nextUrl.pathname);
+  if (pathname.indexOf("/ai") !== -1 || pathname.indexOf("/account") !== -1) {
+    if (!accessToken) {
+      deleteTokens();
+      const forwardUrl = req.nextUrl.clone();
+      forwardUrl.pathname = `/${locale}/login`;
+      forwardUrl.searchParams.set("forwardUrl", req.nextUrl.pathname);
 
-  //     return NextResponse.redirect(forwardUrl);
-  //   }
-
-  // const isAccessTokenValid = await verifyAccessToken(accessToken);
-  // if (!isAccessTokenValid) {
-  //   const email = jwt.decode(accessToken)?.sub?.toString();
-  //   const refreshToken = cookieStore.get(REFRESH_TOKEN)?.value;
-  //   if (
-  //     !email ||
-  //     !refreshToken ||
-  //     !(await refreshTokens(email, refreshToken))
-  //   ) {
-  //     console.log(3);
-  //     deleteTokens();
-  //     return NextResponse.redirect(loginUrl);
-  //   }
-  // }
-  // }
+      return NextResponse.redirect(forwardUrl);
+    }
+  }
 
   return NextResponse.next();
 }

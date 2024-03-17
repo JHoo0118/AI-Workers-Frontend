@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/ui/loading-button";
 import { useAuth } from "@/context/AuthContext";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { ProfileSchema, profileSchema } from "@/lib/validation/profileSchema";
 import { updateUser } from "@/service/user/user";
 import { UpdateUserOutputs } from "@/types/user-types";
@@ -19,6 +20,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 export default function SettingsContainer() {
+  useRequireAuth({ forwardUrl: "/account/settings" });
   const { user, renewalUser } = useAuth();
   const form = useForm<ProfileSchema>({
     resolver: zodResolver(profileSchema),

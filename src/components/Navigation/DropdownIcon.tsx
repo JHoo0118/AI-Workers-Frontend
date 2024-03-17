@@ -1,4 +1,6 @@
-import { LogOut, User } from "lucide-react";
+"use client";
+
+import { LogOut, User, UserIcon } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -11,11 +13,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/context/AuthContext";
+import { useLocale } from "next-intl";
 import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Avatar } from "../ui/avatar";
 
 export function DropdownIcon() {
   const { user, logout } = useAuth();
+  const locale = useLocale();
   async function onLogout() {
     await logout();
   }
@@ -23,15 +27,19 @@ export function DropdownIcon() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="mr-4 cursor-pointer">
-          <AvatarImage src={"/profile.webp"} />
-          <AvatarFallback delayMs={600}>Profile</AvatarFallback>
+          {/* <AvatarImage src={"/profile.webp"} /> */}
+          <div className="flex h-10 w-10 items-center justify-center rounded-full border bg-primary p-2">
+            <UserIcon className="h-6 w-6" />
+          </div>
+
+          {/* <AvatarFallback delayMs={600}>Profile</AvatarFallback> */}
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link href="/account/settings">
+          <Link href={`/${locale}/account/settings`}>
             <DropdownMenuItem className="cursor-pointer">
               <User className="mr-2 h-4 w-4" />
               <span>Account</span>

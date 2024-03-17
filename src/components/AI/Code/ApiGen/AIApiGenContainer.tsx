@@ -77,11 +77,11 @@ function AIApiGenContainer({}: AIApiGenContainerProps) {
   return (
     <>
       <div className="relative flex h-full flex-col items-center">
-        <div className="flex flex-col items-center px-10 py-4 pt-10">
+        <div className="flex flex-col items-center py-4 pt-10">
           <h1 className="text-4xl">{title}</h1>
           <p className="leading-7 [&:not(:first-child)]:mt-6">{content}</p>
         </div>
-        <div className="mx-auto w-full px-4 py-0 md:min-w-[50rem] lg:w-auto lg:p-10">
+        <div className="mx-auto w-full py-0 md:min-w-[50rem] lg:w-auto lg:p-10">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
@@ -116,6 +116,7 @@ function AIApiGenContainer({}: AIApiGenContainerProps) {
                     name="input"
                     placeholder={`// Example:\nCreate something that stores crypto price data in a database`}
                     className="min-h-[10rem] w-full resize-none"
+                    maxLength={2000}
                   />
                 </FormControl>
                 <FormMessage>

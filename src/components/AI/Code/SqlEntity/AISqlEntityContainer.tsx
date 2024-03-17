@@ -82,11 +82,11 @@ function AISqlEntityContainer({}: AISqlEntityContainerProps) {
   return (
     <>
       <div className="relative flex h-full flex-col items-center">
-        <div className="flex flex-col items-center px-10 py-4 pt-10">
+        <div className="flex flex-col items-center py-4 pt-10">
           <h1 className="text-4xl">{title}</h1>
           <p className="leading-7 [&:not(:first-child)]:mt-6">{content}</p>
         </div>
-        <div className="mx-auto w-full px-4 py-0 md:min-w-[50rem] lg:w-auto lg:p-10">
+        <div className="mx-auto w-full py-0 md:min-w-[50rem] lg:w-auto lg:p-10">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
@@ -148,7 +148,7 @@ function AISqlEntityContainer({}: AISqlEntityContainerProps) {
               <HashLoader size={100} color="#2DD4BF" />
             </div>
           )}
-          {generatedCode.trim().length !== 0 && (
+          {!isLoading && generatedCode.trim().length !== 0 && (
             <div className="mt-12 flex justify-center">
               <ArrowDownCircleIcon
                 className="animate-bounce cursor-pointer"

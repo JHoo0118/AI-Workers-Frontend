@@ -42,3 +42,6 @@ package-lock.json-snapshot
 
 tmp_files/
 tmp_usage_files/
+
+robots.txt
+sitemap.xml

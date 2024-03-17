@@ -2,6 +2,7 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { menus } from "@/lib/data/menu";
+import { useLocale } from "next-intl";
 import Link from "next/link";
 import ThemeToggleButton from "../Button/ThemeToggleButton";
 import Logo from "../Logo/Logo";
@@ -11,6 +12,7 @@ import NavItem from "./NavItem";
 
 export default function Navbar() {
   const { user } = useAuth();
+  const locale = useLocale();
 
   return (
     <div className="flex h-nav flex-1 items-center justify-between px-6">
@@ -29,10 +31,10 @@ export default function Navbar() {
         ) : (
           <div className="flex items-center justify-center">
             <Button className="mr-4" asChild variant="ghost">
-              <Link href="/login">로그인</Link>
+              <Link href={`/${locale}/login`}>로그인</Link>
             </Button>
             <Button className="mr-4" asChild>
-              <Link href="/signup">가입하기</Link>
+              <Link href={`/${locale}/signup`}>가입하기</Link>
             </Button>
             <ThemeToggleButton />
           </div>

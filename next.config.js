@@ -1,3 +1,5 @@
+const withNextIntl = require("next-intl/plugin")();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
@@ -8,6 +10,20 @@ const nextConfig = {
     keepAlive: true,
   },
   transpilePackages: ["crypto-js"],
+  // i18n: {
+  //   locales: ["en", "ko"],
+  //   defaultLocale: "en",
+  //   // domains: [
+  //   //   {
+  //   //     domain: 'example.com',
+  //   //     defaultLocale: 'en',
+  //   //   },
+  //   //   {
+  //   //     domain: 'example.kr',
+  //   //     defaultLocale: 'ko',
+  //   //   },
+  //   // ],
+  // },
   webpack: (config) => {
     config.resolve.alias.canvas = false;
 
@@ -63,4 +79,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withNextIntl(nextConfig);

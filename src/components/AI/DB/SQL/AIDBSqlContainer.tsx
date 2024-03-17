@@ -119,7 +119,7 @@ function AIDBSqlContainer({}: AIDBSqlContainerProps) {
 
   return (
     <div className="relative flex h-full flex-col sm:flex-row">
-      <div className="flex flex-col items-center px-10 py-4 pt-10 xl:min-w-[32rem]">
+      <div className="flex flex-col items-center py-4 pt-10 sm:mr-4 xl:min-w-[32rem]">
         <h1 className="text-4xl">{title}</h1>
         <p className="leading-7 [&:not(:first-child)]:mt-6">{content}</p>
         <div className="flex flex-col items-center">

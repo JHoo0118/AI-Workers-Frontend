@@ -12,6 +12,7 @@ import { getMe } from "@/service/user/user";
 import { LoginOutputs, SignupOutputs } from "@/types/auth-types";
 import { SimpleUser, UserModel } from "@/types/user-types";
 import { hasCookie } from "cookies-next";
+import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import {
   ReactNode,
@@ -39,6 +40,7 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<UserModel | undefined>(undefined);
+  const locale = useLocale();
   const router = useRouter();
 
   const getUser = useCallback(async () => {
@@ -83,7 +85,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       },
       error: (error) => <b>{error}</b>,
     });
-    router.replace("/");
+    router.replace(`/${locale}/`);
     await getUser();
   };
 
@@ -95,7 +97,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       },
       error: (error) => <b>{error || "로그인에 실패하였습니다."}</b>,
     });
-    router.replace(forwardurl ?? "/");
+    router.replace(forwardurl ?? `/${locale}`);
     await getUser();
   };
 
@@ -109,8 +111,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     });
     deleteTokens();
     setUser(undefined);
-    router.replace("/");
-  }, [router]);
+    router.replace(`/${locale}`);
+  }, [router, locale]);
 
   return (
     <AuthContext.Provider

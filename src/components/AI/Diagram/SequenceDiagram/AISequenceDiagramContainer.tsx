@@ -10,6 +10,7 @@ import { sequenceDiagramSchema } from "@/lib/validation/ai/diagram/seq/seqDiagra
 import { sequenceDiagramGenerate } from "@/service/ai/diagram/seq/seq";
 import { SeqDiagramGenerateOutputs } from "@/types/ai-types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -20,6 +21,7 @@ interface AISequenceDiagramContainerProps {}
 
 function AISequenceDiagramContainer({}: AISequenceDiagramContainerProps) {
   useRequireAuth({ forwardUrl: "/ai/diagram/seq" });
+  const locale = useLocale();
   const { title, content } = useMenu();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -37,7 +39,7 @@ function AISequenceDiagramContainer({}: AISequenceDiagramContainerProps) {
       success: (data: SeqDiagramGenerateOutputs) => {
         const { image } = data;
         const encryptedImage = CryptoUtils.getInstance().encryptAes(image);
-        router.push(`/ai/diagram/seq/result/${encryptedImage}`);
+        router.push(`/${locale}/ai/diagram/seq/result/${encryptedImage}`);
         return <b>이미지가 생성되었습니다.</b>;
       },
       error: (error) => {
@@ -53,11 +55,11 @@ function AISequenceDiagramContainer({}: AISequenceDiagramContainerProps) {
         <Loading message={"생성 중입니다. 잠시만 기다려 주세요."} />
       ) : (
         <>
-          <div className="flex flex-col items-center px-10 py-4 pt-10">
+          <div className="flex flex-col items-center py-4 pt-10">
             <h1 className="text-4xl">{title}</h1>
             <p className="leading-7 [&:not(:first-child)]:mt-6">{content}</p>
           </div>
-          <div className="mx-auto w-full px-4 py-0 lg:w-auto lg:p-10">
+          <div className="mx-auto w-full py-0 lg:w-auto lg:p-10">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -70,6 +72,7 @@ function AISequenceDiagramContainer({}: AISequenceDiagramContainerProps) {
                       name="request"
                       placeholder={`Client는 Authorization Server에 Access Token을 요청합니다. 이 경우에 포함된 파라미터는 grant_type입니다. 이에 응답하여, Authorization Server는 Client에 Access Token을 전달합니다. 이 프로세스가 실패하면, 연결이 종료됩니다. 마지막으로 Client는 Resource Server에 보호된 리소스를 획득하도록 요청하고, Resource Server는 요청된 리소스를 Client에 전달합니다.`}
                       className="min-h-[10rem] w-full lg:min-h-[12rem] lg:w-[50rem]"
+                      maxLength={2000}
                     ></Textarea>
                   </FormControl>
                   <FormMessage>

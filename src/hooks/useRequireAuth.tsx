@@ -2,6 +2,7 @@
 
 import { ACCESS_TOKEN } from "@/const/const";
 import { hasCookie } from "cookies-next";
+import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -11,6 +12,7 @@ export interface UseRequireAuthProps {
 
 export const useRequireAuth = ({ forwardUrl }: UseRequireAuthProps) => {
   const router = useRouter();
+  const locale = useLocale();
 
   useEffect(() => {
     const isAuthenticated = () => {
@@ -21,7 +23,9 @@ export const useRequireAuth = ({ forwardUrl }: UseRequireAuthProps) => {
     // Redirect to login page if not authenticated
     if (!isAuthenticated()) {
       router.replace(
-        !!forwardUrl ? `/login?forwardUrl=${forwardUrl}` : "/login",
+        !!forwardUrl
+          ? `/${locale}/login?forwardUrl=${forwardUrl}`
+          : `/${locale}/login`,
       );
     }
 
@@ -30,7 +34,9 @@ export const useRequireAuth = ({ forwardUrl }: UseRequireAuthProps) => {
         // Perform the authentication check again
         if (!isAuthenticated()) {
           router.push(
-            !!forwardUrl ? `/login?forwardUrl=${forwardUrl}` : "/login",
+            !!forwardUrl
+              ? `/${locale}/login?forwardUrl=${forwardUrl}`
+              : `/${locale}/login`,
           );
         }
       }
@@ -41,5 +47,5 @@ export const useRequireAuth = ({ forwardUrl }: UseRequireAuthProps) => {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [router, forwardUrl]);
+  }, [router, forwardUrl, locale]);
 };

@@ -57,3 +57,33 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media (min-width: 640px) {
+  /* sm */
+  .sm\:h-screen-nav {
+    height: calc(100vh - 3rem - 1px);
+  }
+  .sm\:nav {
+    height: 3rem;
+  }
+}
+
+@media (min-width: 768px) {
+  /* md */
+  .sm\:h-screen-nav {
+    height: calc(100vh - 3.5rem - 1px);
+  }
+  .sm\:nav {
+    height: 3.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* lg */
+  .sm\:h-screen-nav {
+    height: calc(100vh - 4rem - 1px);
+  }
+  .sm\:nav {
+    height: 4rem;
+  }
+}

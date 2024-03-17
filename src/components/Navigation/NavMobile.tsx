@@ -2,11 +2,15 @@
 
 import ButtonClose from "@/components/ButtonClose/ButtonClose";
 import Logo from "@/components/Logo/Logo";
+import { useAuth } from "@/context/AuthContext";
 import { Menu } from "@/lib/data/menu";
 import { Disclosure } from "@headlessui/react";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon, LogOut, User } from "lucide-react";
+import { useLocale } from "next-intl";
 import Link from "next/link";
 import React from "react";
+import ThemeToggleButton from "../Button/ThemeToggleButton";
+import { Button } from "../ui/button";
 
 export interface NavMobileProps {
   data: Menu[];
@@ -14,6 +18,12 @@ export interface NavMobileProps {
 }
 
 const NavMobile: React.FC<NavMobileProps> = ({ data, onClickClose }) => {
+  const { user, logout } = useAuth();
+  const locale = useLocale();
+
+  async function onLogout() {
+    await logout();
+  }
   const _renderMenuChild = (
     item: Menu,
     itemClass = " pl-3 text-neutral-900 dark:text-neutral-200 font-medium ",
@@ -167,14 +177,52 @@ const NavMobile: React.FC<NavMobileProps> = ({ data, onClickClose }) => {
             <ThemeToggleButton />
           </div> */}
         </div>
+
         <span className="absolute right-2 top-2 p-1">
           <ButtonClose onClick={onClickClose} />
         </span>
 
         {/* <div className="mt-5">{renderSearchForm()}</div> */}
       </div>
+      {user ? (
+        <div className="flex items-center px-4 py-2">
+          <ThemeToggleButton />
+        </div>
+      ) : (
+        <div className="flex items-center px-4 py-2">
+          <Button className="mr-4" asChild variant="ghost">
+            <Link href={`/${locale}/login`}>로그인</Link>
+          </Button>
+          <Button className="mr-4" asChild>
+            <Link href={`/${locale}/signup`}>가입하기</Link>
+          </Button>
+          <ThemeToggleButton />
+        </div>
+      )}
+
       <ul className="flex flex-col space-y-1 px-2 py-6">
         {data.map(_renderItem)}
+        {user && (
+          <>
+            <hr />
+            <Link
+              className="flex w-full items-center rounded-lg px-4 py-2.5 text-sm font-medium uppercase tracking-wide hover:bg-slate-100 dark:hover:bg-slate-800"
+              href={`/${locale}/account/settings`}
+            >
+              <div className="flex cursor-pointer items-center">
+                <User className="mr-2 h-4 w-4" />
+                <span>Account</span>
+              </div>
+            </Link>
+            <div
+              className="flex w-full cursor-pointer items-center rounded-lg px-4 py-2.5 text-sm font-medium uppercase tracking-wide hover:bg-slate-100 dark:hover:bg-slate-800"
+              onClick={onLogout}
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log out</span>
+            </div>
+          </>
+        )}
       </ul>
     </div>
   );

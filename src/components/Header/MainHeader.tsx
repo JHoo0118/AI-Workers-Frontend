@@ -20,7 +20,7 @@ export default function MainHeader() {
         !showHeader && "hidden",
       )}
     >
-      <div className="flex h-20 flex-1 items-center lg:hidden">
+      <div className="flex h-12 flex-1 items-center sm:h-14 md:h-16 lg:hidden lg:h-20">
         <MenuBar />
       </div>
       <div className="mx-auto hidden max-w-screen-2xl lg:block">

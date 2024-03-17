@@ -1,7 +1,10 @@
 import { Menu, gridMenus } from "@/lib/data/menu";
+import { useLocale } from "next-intl";
 import { usePathname } from "next/navigation";
 
 export default function useMenu() {
+  const locale = useLocale();
   const pathname = usePathname();
-  return gridMenus.find((menu: Menu) => pathname === menu.href)!;
+  const splittedPathname = pathname.split(locale);
+  return gridMenus.find((menu: Menu) => splittedPathname[1] === menu.href)!;
 }

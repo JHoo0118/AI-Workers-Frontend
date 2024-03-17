@@ -69,7 +69,7 @@ function AIDocsSummaryContainer({
   return (
     <div className="relative flex h-full justify-center">
       {files?.length === 0 && (
-        <div className="flex flex-col items-center p-10">
+        <div className="flex flex-col items-center overflow-x-hidden py-10">
           <h1 className="text-4xl">{title}</h1>
           <p className="leading-7 [&:not(:first-child)]:mt-6">{content}</p>
           <Button
@@ -103,7 +103,7 @@ function AIDocsSummaryContainer({
         sideBarContent={
           files &&
           files.length > 0 && (
-            <div className="flex h-full flex-col justify-between px-4 py-2">
+            <div className="flex h-full flex-col justify-between py-2">
               <div className="mb-10 sm:mb-0">
                 <h1 className="mb-6 mt-2 text-3xl">{title}</h1>
                 <Card className="mb-4">

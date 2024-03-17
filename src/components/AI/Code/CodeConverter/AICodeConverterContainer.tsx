@@ -68,11 +68,11 @@ function AICodeConverterContainer({}: AICodeConverterContainerProps) {
 
   return (
     <div className="relative flex h-full flex-col items-center">
-      <div className="flex flex-col items-center px-10 pb-2 pt-10">
+      <div className="flex flex-col items-center pb-2 pt-10">
         <h1 className="text-4xl">{title}</h1>
         <p className="leading-7 [&:not(:first-child)]:mt-6">{content}</p>
       </div>
-      <div className="mx-auto w-full px-4 py-0 lg:w-auto lg:min-w-[62rem] lg:p-10 xl:min-w-[76rem]">
+      <div className="mx-auto w-full py-0 lg:w-auto lg:min-w-[62rem] lg:p-10 xl:min-w-[76rem]">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}

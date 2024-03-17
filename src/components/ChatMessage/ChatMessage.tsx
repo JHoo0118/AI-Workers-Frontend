@@ -25,9 +25,7 @@ export default function ChatMessage({
       <div
         className={cn(
           "flex h-10 w-10 items-center justify-center rounded-full border p-2",
-          isAiMessage
-            ? "bg-gray-100 dark:bg-card"
-            : "bg-blue-200 dark:bg-primary",
+          isAiMessage ? "bg-gray-100 dark:bg-card" : "bg-primary",
         )}
       >
         {isAiMessage ? (
@@ -40,7 +38,7 @@ export default function ChatMessage({
         <div className="flex flex-row">
           <div className="mr-4 flex flex-col items-start justify-start">
             <span className="block font-bold">
-              {isAiMessage ? "AI Workers 봇" : "나"}
+              {isAiMessage ? "AI WORKERS 봇" : "나"}
             </span>
             <p className="whitespace-pre-line break-all text-left">{content}</p>
           </div>
@@ -49,7 +47,7 @@ export default function ChatMessage({
       ) : (
         <div className="flex flex-col items-start justify-start">
           <span className="block font-bold">
-            {isAiMessage ? "AI Workers 봇" : "나"}
+            {isAiMessage ? "AI WORKERS 봇" : "나"}
           </span>
           <p className="whitespace-pre-line break-all text-left">
             <MarkdownRenderer content={content} />
