@@ -20,9 +20,10 @@ import { z } from "zod";
 interface AIErdContainerProps {}
 
 function AIErdContainer({}: AIErdContainerProps) {
-  useRequireAuth({ forwardUrl: "/ai/diagram/erd" });
+  const url = "/ai/diagram/erd";
+  useRequireAuth({ forwardUrl: url });
   const locale = useLocale();
-  const { title, content } = useMenu();
+  const { title, content } = useMenu(url);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [queryInput, setQueryInput] = useState<string>("");

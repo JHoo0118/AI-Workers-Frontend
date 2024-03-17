@@ -34,8 +34,9 @@ import { z } from "zod";
 interface AIApiGenContainerProps {}
 
 function AIApiGenContainer({}: AIApiGenContainerProps) {
-  useRequireAuth({ forwardUrl: "/ai/code/apigen" });
-  const { title, content } = useMenu();
+  const url = "/ai/code/apigen";
+  useRequireAuth({ forwardUrl: url });
+  const { title, content } = useMenu(url);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [generatedCode, setGeneratedCode] = useState<string>("");
   const form = useForm<z.infer<typeof apiGenSchema>>({

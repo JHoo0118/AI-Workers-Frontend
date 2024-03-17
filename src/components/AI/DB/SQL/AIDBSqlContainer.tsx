@@ -18,8 +18,9 @@ import { useEffect, useRef, useState } from "react";
 interface AIDBSqlContainerProps {}
 
 function AIDBSqlContainer({}: AIDBSqlContainerProps) {
-  useRequireAuth({ forwardUrl: "/ai/db/sql" });
-  const { title, content } = useMenu();
+  const url = "/ai/db/sql";
+  useRequireAuth({ forwardUrl: url });
+  const { title, content } = useMenu(url);
   const [loading, setLoading] = useState<boolean>(false);
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
 

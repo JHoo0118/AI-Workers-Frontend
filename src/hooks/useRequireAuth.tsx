@@ -24,7 +24,7 @@ export const useRequireAuth = ({ forwardUrl }: UseRequireAuthProps) => {
     if (!isAuthenticated()) {
       router.replace(
         !!forwardUrl
-          ? `/${locale}/login?forwardUrl=${forwardUrl}`
+          ? `/${locale}/login?forwardUrl=/${locale}/${forwardUrl}`
           : `/${locale}/login`,
       );
     }
@@ -35,7 +35,7 @@ export const useRequireAuth = ({ forwardUrl }: UseRequireAuthProps) => {
         if (!isAuthenticated()) {
           router.push(
             !!forwardUrl
-              ? `/${locale}/login?forwardUrl=${forwardUrl}`
+              ? `/${locale}/login?forwardUrl=/${locale}/${forwardUrl}`
               : `/${locale}/login`,
           );
         }

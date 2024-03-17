@@ -33,8 +33,9 @@ import { z } from "zod";
 interface AISqlEntityContainerProps {}
 
 function AISqlEntityContainer({}: AISqlEntityContainerProps) {
-  useRequireAuth({ forwardUrl: "/ai/code/sqlentity" });
-  const { title, content } = useMenu();
+  const url = "/ai/code/sqlentity";
+  useRequireAuth({ forwardUrl: url });
+  const { title, content } = useMenu(url);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [sqlInput, setSqlInput] = useState<string>("");
   const [generatedCode, setGeneratedCode] = useState<string>("");

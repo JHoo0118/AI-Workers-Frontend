@@ -35,10 +35,11 @@ function PdfToWordContainer({
   removeFile,
   acceptedFileType,
 }: PdfToWordContainerProps) {
+  const url = "/pdf/pdf_to_word";
   const locale = useLocale();
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
-  const { title, content } = useMenu();
+  const { title, content } = useMenu(url);
 
   async function handleSubmitMergePdfFiles(e: React.SyntheticEvent) {
     e.preventDefault();

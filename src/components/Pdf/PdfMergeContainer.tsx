@@ -35,10 +35,11 @@ function PdfMergeContainer({
   removeFile,
   acceptedFileType,
 }: PdfMergeContainerProps) {
+  const url = "/pdf/merge";
   const locale = useLocale();
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
-  const { title, content } = useMenu();
+  const { title, content } = useMenu(url);
   async function handleSubmitMergePdfFiles(e: React.SyntheticEvent) {
     e.preventDefault();
     setLoading(true);

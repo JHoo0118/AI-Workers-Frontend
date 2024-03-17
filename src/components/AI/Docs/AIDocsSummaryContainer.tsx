@@ -34,8 +34,9 @@ function AIDocsSummaryContainer({
   acceptedFileType,
   multiple = true,
 }: AIDocsSummaryContainerProps) {
-  useRequireAuth({ forwardUrl: "/ai/docs/summary" });
-  const { title, content } = useMenu();
+  const url = "/ai/docs/summary";
+  useRequireAuth({ forwardUrl: url });
+  const { title, content } = useMenu(url);
   const [loading, setLoading] = useState<boolean>(false);
   const [completedFile, setCompletedFile] = useState<boolean>(false);
   const [messages, setMessages] = useState<Message[]>([]);

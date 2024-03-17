@@ -46,7 +46,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const getUser = useCallback(async () => {
     if (hasCookie(ACCESS_TOKEN)) {
       const user = await getMe();
-
       if (!user) {
         return;
       }
@@ -98,6 +97,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       error: (error) => <b>{error || "로그인에 실패하였습니다."}</b>,
     });
     router.replace(forwardurl ?? `/${locale}`);
+    router.refresh();
     await getUser();
   };
 

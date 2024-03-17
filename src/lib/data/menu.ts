@@ -1,8 +1,10 @@
+import { Route } from "@/routers/types";
+
 export interface Menu {
   id: string;
   title: string;
   content: string;
-  href: any;
+  href: Route;
   targetBlank?: boolean;
   children?: Menu[];
   type?: "dropdown" | "megaMenu" | "none";

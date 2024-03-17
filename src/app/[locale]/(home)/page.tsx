@@ -3,7 +3,7 @@ import GridMenuItem from "@/components/GridMenuItem";
 import HomeText from "@/components/Home/HomeText";
 import { gridMenus } from "@/lib/data/menu";
 
-export default function Home({ locale }: { locale: string }) {
+export default function Home() {
   return (
     <>
       <section className="mx-auto flex w-full max-w-screen-2xl flex-col p-4 pt-8">

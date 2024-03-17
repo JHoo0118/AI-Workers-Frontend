@@ -25,8 +25,9 @@ import { z } from "zod";
 interface AICodeConverterContainerProps {}
 
 function AICodeConverterContainer({}: AICodeConverterContainerProps) {
-  useRequireAuth({ forwardUrl: "/ai/code/codeconvert" });
-  const { title, content } = useMenu();
+  const url = "/ai/code/codeconvert";
+  useRequireAuth({ forwardUrl: url });
+  const { title, content } = useMenu(url);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [codeInput, setCodeInput] = useState<string>("");
   const [targetCodeInput, setTargetCodeInput] = useState<string>("");

@@ -20,9 +20,10 @@ import { z } from "zod";
 interface AISequenceDiagramContainerProps {}
 
 function AISequenceDiagramContainer({}: AISequenceDiagramContainerProps) {
-  useRequireAuth({ forwardUrl: "/ai/diagram/seq" });
+  const url = "/ai/diagram/seq";
+  useRequireAuth({ forwardUrl: url });
   const locale = useLocale();
-  const { title, content } = useMenu();
+  const { title, content } = useMenu(url);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const form = useForm<z.infer<typeof sequenceDiagramSchema>>({
