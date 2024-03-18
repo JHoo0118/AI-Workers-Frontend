@@ -68,7 +68,7 @@ function AIDocsSummaryAgentContainer({
   }
 
   return (
-    <div className="relative flex h-full justify-center">
+    <div className="relative flex h-full justify-center px-4">
       {files?.length === 0 && (
         <div className="flex flex-col items-center overflow-x-hidden py-10">
           <h1 className="text-4xl">{title}</h1>

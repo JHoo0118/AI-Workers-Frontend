@@ -6,7 +6,7 @@ import { gridMenus } from "@/lib/data/menu";
 export default function Home() {
   return (
     <>
-      <section className="mx-auto flex w-full max-w-screen-2xl flex-col p-4 pt-8">
+      <section className="mx-auto mb-80 flex w-full max-w-screen-2xl flex-col p-4 pt-8">
         <HomeText />
         <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
           {gridMenus.map((gridMenu) => (

@@ -2,6 +2,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils/utils";
 import { Home, LogOut, Settings } from "lucide-react";
+import { useLocale } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -17,7 +18,7 @@ export default function AccountSidebar({ children }: AccountSidebarProps) {
   const [currentMenu, setCurrentMenu] =
     useState<AccountSidebarMenus>("Settings");
   const pathname = usePathname();
-
+  const locale = useLocale();
   const { user, logout } = useAuth();
   async function onLogout() {
     await logout();
@@ -75,7 +76,7 @@ export default function AccountSidebar({ children }: AccountSidebarProps) {
           <div>{currentMenu}</div>
           <Link
             className="group flex items-center rounded-lg p-2 text-gray-900 transition-colors hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-            href="/"
+            href={`/${locale}`}
           >
             <Home className="h-6 w-6" />
           </Link>

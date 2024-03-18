@@ -26,7 +26,7 @@ const NavMobile: React.FC<NavMobileProps> = ({ data, onClickClose }) => {
   }
   const _renderMenuChild = (
     item: Menu,
-    itemClass = " pl-3 text-neutral-900 dark:text-neutral-200 font-medium ",
+    itemClass = "pl-3 text-neutral-900 dark:text-neutral-200 font-medium",
   ) => {
     return (
       <ul className="nav-mobile-sub-menu pb-1 pl-6 text-base">
@@ -34,7 +34,7 @@ const NavMobile: React.FC<NavMobileProps> = ({ data, onClickClose }) => {
           <Disclosure key={index} as="li">
             <Link
               href={{
-                pathname: i.href || undefined,
+                pathname: `/${locale}${i.href}` || undefined,
               }}
               className={`mt-0.5 flex rounded-lg pr-4 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800 ${itemClass}`}
             >
@@ -85,7 +85,7 @@ const NavMobile: React.FC<NavMobileProps> = ({ data, onClickClose }) => {
         <Link
           className="flex w-full items-center rounded-lg px-4 py-2.5 text-sm font-medium uppercase tracking-wide hover:bg-slate-100 dark:hover:bg-slate-800"
           href={{
-            pathname: item.href || undefined,
+            pathname: `/${locale}${item.href}` || undefined,
           }}
         >
           <span

@@ -143,7 +143,7 @@ const NavItem: FC<NavItemProps> = ({ menu }) => {
         <Link
           className="font-normal text-slate-600 hover:text-black dark:text-slate-400 dark:hover:text-white "
           href={{
-            pathname: item.href || undefined,
+            pathname: `/${locale}${item.href}` || undefined,
           }}
         >
           {item.title}
