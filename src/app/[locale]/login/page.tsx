@@ -13,6 +13,7 @@ import { FORWARD_URL } from "@/const/const";
 import { useAuth } from "@/context/AuthContext";
 import { LoginSchema, loginSchema } from "@/lib/validation/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useLocale } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -23,6 +24,7 @@ const LoginPageContent = () => {
   const searchParams = useSearchParams();
   const forwardUrl = searchParams.get(FORWARD_URL);
   const { login } = useAuth();
+  const locale = useLocale();
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
   });
@@ -30,7 +32,7 @@ const LoginPageContent = () => {
     await login(
       data,
       !!!forwardUrl
-        ? "/"
+        ? `${locale}`
         : typeof forwardUrl === "string"
           ? forwardUrl
           : forwardUrl[0],
