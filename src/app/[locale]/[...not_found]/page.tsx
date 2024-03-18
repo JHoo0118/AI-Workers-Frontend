@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import NotFoundReturnToHomeButton from "@/components/NotFound/NotFoundReturnToHomeButton";
 import React from "react";
 
 const Page404: React.FC = () => (
@@ -11,12 +10,10 @@ const Page404: React.FC = () => (
         <h1 className="text-8xl font-semibold tracking-widest md:text-9xl">
           404
         </h1>
-        <span className="block text-sm font-medium tracking-wider text-neutral-800 sm:text-base dark:text-neutral-200">
+        <span className="block text-sm font-medium tracking-wider text-neutral-800 dark:text-neutral-200 sm:text-base">
           {`페이지를 찾을 수 없습니다.`}
         </span>
-        <Button variant="link" className="mt-4">
-          <Link href="/">홈으로 돌아가기</Link>
-        </Button>
+        <NotFoundReturnToHomeButton />
       </header>
     </div>
   </div>

@@ -78,6 +78,7 @@ export async function middleware(req: NextRequest) {
   const cookieStore = req.cookies;
   const accessToken = cookieStore.get(ACCESS_TOKEN)?.value;
   const locale = "ko";
+
   if (
     accessToken &&
     (pathname.indexOf("/login") !== -1 || pathname.indexOf("/signup") !== -1)
