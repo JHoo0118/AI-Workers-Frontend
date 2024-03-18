@@ -24,15 +24,14 @@ const LoginPageContent = () => {
   const searchParams = useSearchParams();
   const forwardUrl = searchParams.get(FORWARD_URL);
   const { login } = useAuth();
-  const locale = useLocale();
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
   });
   const onSubmit = async (data: LoginSchema) => {
     await login(
       data,
-      !!!forwardUrl
-        ? `${locale}`
+      !forwardUrl
+        ? undefined
         : typeof forwardUrl === "string"
           ? forwardUrl
           : forwardUrl[0],
@@ -96,6 +95,7 @@ const LoginPageContent = () => {
 };
 
 const LoginPage = () => {
+  const locale = useLocale();
   return (
     <div className="flex h-full flex-col items-center justify-center">
       <div className="w-full max-w-md space-y-6 rounded-md bg-card p-8 shadow-md dark:bg-secondary">
@@ -115,12 +115,12 @@ const LoginPage = () => {
         <h3>
           아직 계정이 없으신가요?{" "}
           <span className="cursor-pointer text-teal-400 underline">
-            <Link href="/signup">회원가입</Link>
+            <Link href={`/${locale}/signup`}>회원가입</Link>
           </span>
         </h3>
       </div>
       <Button variant="link" className="mt-4">
-        <Link href="/">홈으로 돌아가기</Link>
+        <Link href={`/${locale}`}>홈으로 돌아가기</Link>
       </Button>
     </div>
   );

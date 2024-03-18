@@ -16,11 +16,13 @@ import LoadingButton from "@/components/ui/loading-button";
 import { useAuth } from "@/context/AuthContext";
 import { SignupSchema, signupSchema } from "@/lib/validation/signupSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useLocale } from "next-intl";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
 const SignupPage = () => {
   const { signup } = useAuth();
+  const locale = useLocale();
   const form = useForm<SignupSchema>({
     resolver: zodResolver(signupSchema),
   });
@@ -91,12 +93,12 @@ const SignupPage = () => {
         <h3>
           이미 계정이 있으신가요?{" "}
           <span className="cursor-pointer text-teal-400 underline">
-            <Link href="/login">로그인</Link>
+            <Link href={`/${locale}/login`}>로그인</Link>
           </span>
         </h3>
       </div>
       <Button variant="link" className="mt-4">
-        <Link href="/">홈으로 돌아가기</Link>
+        <Link href={`/${locale}`}>홈으로 돌아가기</Link>
       </Button>
     </div>
   );
