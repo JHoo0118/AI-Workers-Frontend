@@ -16,7 +16,7 @@ export default function ChatMessage({
   return (
     <div
       className={cn(
-        "flex flex-1 items-start gap-3 py-8 pl-6 pr-10 text-sm ",
+        "flex w-full flex-1 items-start gap-3 overflow-x-auto py-8 pl-6 pr-10 text-sm",
         isAiMessage
           ? "bg-gray-300 dark:bg-secondary"
           : "bg-gray-200 dark:bg-card",

@@ -119,8 +119,8 @@ function AIDBSqlContainer({}: AIDBSqlContainerProps) {
   }
 
   return (
-    <div className="relative flex h-full flex-col sm:flex-row">
-      <div className="flex flex-col items-center py-4 pt-10 sm:mr-4 xl:min-w-[32rem]">
+    <div className="relative flex h-full flex-col lg:flex-row">
+      <div className="flex min-w-[16rem] flex-col items-center py-4 pt-10 sm:mr-4 xl:min-w-[32rem]">
         <h1 className="text-4xl">{title}</h1>
         <p className="leading-7 [&:not(:first-child)]:mt-6">{content}</p>
         <div className="flex flex-col items-center">
@@ -152,7 +152,7 @@ function AIDBSqlContainer({}: AIDBSqlContainerProps) {
           </Button>
         </div>
       </div>
-      <div className="my-0 w-full">
+      <div className="my-0 h-full w-full">
         <div className="mx-auto flex max-h-full min-h-full w-full max-w-[120rem] flex-col justify-between rounded-lg bg-gray-100 dark:bg-neutral-800 sm:w-full md:w-full lg:w-full">
           <div ref={scrollRef} className="relative overflow-y-auto">
             {messages.map((message) => (

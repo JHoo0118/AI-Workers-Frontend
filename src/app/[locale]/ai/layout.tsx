@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description: "AI WORKERS",
 };
 
-export default function PdfLayout({ children }: { children: React.ReactNode }) {
+export default function AILayout({ children }: { children: React.ReactNode }) {
   return (
     <section className="h-screen-nav w-full overflow-auto">{children}</section>
   );
