@@ -18,7 +18,7 @@ import Link from "next/link";
 import { Avatar } from "../ui/avatar";
 
 export function DropdownIcon() {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const locale = useLocale();
   async function onLogout() {
     await logout();

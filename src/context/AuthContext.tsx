@@ -9,6 +9,7 @@ import {
   signup as signupService,
 } from "@/service/auth/auth";
 import { getMe } from "@/service/user/user";
+import useUserStore from "@/store/userStore";
 import { LoginOutputs, SignupOutputs } from "@/types/auth-types";
 import { SimpleUser, UserModel } from "@/types/user-types";
 import { hasCookie } from "cookies-next";
@@ -20,12 +21,10 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useState,
 } from "react";
 import { toast } from "react-hot-toast";
 
 interface AuthContextType {
-  user?: UserModel;
   signup: (signupSchemaInputs: SignupSchema) => Promise<void>;
   login: (loginSchemaInputs: LoginSchema, forwardUrl?: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -39,42 +38,44 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<UserModel | undefined>(undefined);
+  const { setUser, deleteUser } = useUserStore();
+  const user = useUserStore((state) => state.user);
   const locale = useLocale();
   const router = useRouter();
 
+  const renewalUser = useCallback(
+    (user: UserModel) => {
+      setUser(user);
+
+      const simpleUser: SimpleUser = {
+        email: user.email,
+        username: user.username,
+      };
+
+      localStorage.setItem(USER, JSON.stringify(simpleUser));
+    },
+    [setUser],
+  );
+
   const getUser = useCallback(async () => {
     if (hasCookie(ACCESS_TOKEN)) {
-      const user = await getMe();
-      if (!user) {
+      const userFromAPI = await getMe();
+      if (!userFromAPI) {
         return;
       }
-      renewalUser(user);
+      renewalUser(userFromAPI);
     }
-  }, []);
+  }, [renewalUser]);
 
   useEffect(() => {
-    if (localStorage.getItem(USER) === null) {
+    if (user === null) {
       getUser();
-    } else {
-      setUser(JSON.parse(localStorage.getItem(USER)!));
     }
 
     if (!hasCookie(ACCESS_TOKEN)) {
       deleteTokens();
     }
-  }, [getUser]);
-
-  const renewalUser = (user: UserModel) => {
-    setUser(user);
-
-    const simpleUser: SimpleUser = {
-      email: user.email,
-      username: user.username,
-    };
-
-    localStorage.setItem(USER, JSON.stringify(simpleUser));
-  };
+  }, [user, getUser]);
 
   const signup = async (signupSchemaInputs: SignupSchema) => {
     await toast.promise(signupService(signupSchemaInputs), {
@@ -112,12 +113,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     deleteTokens();
     setUser(undefined);
     router.replace(`/${locale}`);
-  }, [router, locale]);
+  }, [router, locale, setUser]);
 
   return (
     <AuthContext.Provider
       value={{
-        user,
         signup,
         login,
         logout,

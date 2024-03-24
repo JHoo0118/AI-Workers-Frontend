@@ -4,6 +4,7 @@ import ButtonClose from "@/components/ButtonClose/ButtonClose";
 import Logo from "@/components/Logo/Logo";
 import { useAuth } from "@/context/AuthContext";
 import { Menu } from "@/lib/data/menu";
+import useUserStore from "@/store/userStore";
 import { Disclosure } from "@headlessui/react";
 import { ChevronDownIcon, LogOut, User } from "lucide-react";
 import { useLocale } from "next-intl";
@@ -18,7 +19,8 @@ export interface NavMobileProps {
 }
 
 const NavMobile: React.FC<NavMobileProps> = ({ data, onClickClose }) => {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
+  const user = useUserStore((state) => state.user);
   const locale = useLocale();
 
   async function onLogout() {

@@ -95,7 +95,7 @@ const useManageTaskEventSource = (taskId: string) => {
                         <span>
                           진행 중인 작업이 완료되었습니다.
                           <Button
-                            variant="secondary"
+                            variant="default"
                             size="sm"
                             className="ml-2"
                             onClick={() => {

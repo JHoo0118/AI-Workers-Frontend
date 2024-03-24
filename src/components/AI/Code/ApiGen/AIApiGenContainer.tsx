@@ -107,6 +107,16 @@ function AIApiGenContainer({}: AIApiGenContainerProps) {
           <span className="sr-only">Toggle Workflow</span>
         </Button>
         아이콘을 통해 작업 현황을 확인할 수 있습니다.
+        <Button
+          variant="default"
+          size="sm"
+          className="ml-2"
+          onClick={() => {
+            toast.dismiss(t.id);
+          }}
+        >
+          확인
+        </Button>
       </div>
     ));
   }
@@ -189,15 +199,15 @@ function AIApiGenContainer({}: AIApiGenContainerProps) {
             </form>
           </Form>
           {isLoading && (
-            <div className="mt-20 flex justify-center">
-              <HashLoader size={100} color="#2DD4BF" />
+            <div className="mb-20 mt-20 flex justify-center">
+              <HashLoader size={90} color="#2DD4BF" />
             </div>
           )}
           {generatedCode.trim().length !== 0 && (
-            <div className="mt-24 flex justify-center">
+            <div className="mb-20 mt-20 flex justify-center">
               <ArrowDownCircleIcon
                 className="animate-bounce cursor-pointer"
-                size={100}
+                size={90}
                 color="#2DD4BF"
                 onClick={() =>
                   resultSectionRef.current?.scrollIntoView({

@@ -13,6 +13,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { ProfileSchema, profileSchema } from "@/lib/validation/profileSchema";
 import { updateUser } from "@/service/user/user";
+import useUserStore from "@/store/userStore";
 import { UpdateUserOutputs } from "@/types/user-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -21,7 +22,8 @@ import toast from "react-hot-toast";
 
 export default function SettingsContainer() {
   useRequireAuth({ forwardUrl: "/account/settings" });
-  const { user, renewalUser } = useAuth();
+  const { renewalUser } = useAuth();
+  const user = useUserStore((state) => state.user);
   const form = useForm<ProfileSchema>({
     resolver: zodResolver(profileSchema),
   });

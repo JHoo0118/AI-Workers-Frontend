@@ -1,7 +1,7 @@
 "use client";
 
-import { useAuth } from "@/context/AuthContext";
 import { menus } from "@/lib/data/menu";
+import useUserStore from "@/store/userStore";
 import { useLocale } from "next-intl";
 import Link from "next/link";
 import ThemeToggleButton from "../Button/ThemeToggleButton";
@@ -12,7 +12,7 @@ import { DropdownIcon } from "./DropdownIcon";
 import NavItem from "./NavItem";
 
 export default function Navbar() {
-  const { user } = useAuth();
+  const user = useUserStore((state) => state.user);
   const locale = useLocale();
 
   return (

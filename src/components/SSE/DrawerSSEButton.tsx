@@ -59,8 +59,10 @@ export default function DrawerSSEButton() {
           </DrawerHeader>
           <div className="max-h-[80%] min-h-[60%] overflow-y-auto pb-0  pt-4">
             <div className="flex items-center justify-center space-x-2">
-              <Table>
-                <TableCaption>작업은 저장되지 않습니다.</TableCaption>
+              <Table className="min-w-[40rem] overflow-x-auto">
+                <TableCaption className="pb-4">
+                  작업은 저장되지 않습니다.
+                </TableCaption>
                 <TableHeader>
                   <TableRow>
                     <TableHead>작업 종류</TableHead>
@@ -70,7 +72,7 @@ export default function DrawerSSEButton() {
                     <TableHead>이동</TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody>
+                <TableBody className="min-w-[40rem] overflow-x-auto">
                   {taskList.map((task) => (
                     // <SSETask key={task.taskId} taskId={task.taskId} />
                     <TableRow key={task.taskId}>

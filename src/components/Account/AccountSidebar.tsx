@@ -1,6 +1,7 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils/utils";
+import useUserStore from "@/store/userStore";
 import { Home, LogOut, Settings } from "lucide-react";
 import { useLocale } from "next-intl";
 import Link from "next/link";
@@ -19,7 +20,8 @@ export default function AccountSidebar({ children }: AccountSidebarProps) {
     useState<AccountSidebarMenus>("Settings");
   const pathname = usePathname();
   const locale = useLocale();
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
+  const user = useUserStore((state) => state.user);
   async function onLogout() {
     await logout();
   }
