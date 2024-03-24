@@ -33,7 +33,7 @@ const useManageTaskEventSource = (taskId: string) => {
     };
 
     if (task && !task.completed) {
-      const eventSourceUrl = `/py-api/sse/stream/${taskId}`;
+      const eventSourceUrl = `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/sse/stream/${taskId}`;
 
       (async () => {
         let response = await fetch(eventSourceUrl, {
