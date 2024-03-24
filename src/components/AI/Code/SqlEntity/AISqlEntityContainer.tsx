@@ -24,7 +24,7 @@ import { sqlToEntity } from "@/service/ai/code/sqlEntity/sqlEntity";
 import { SqlToEntityOutputs } from "@/types/ai-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowDownCircleIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HashLoader } from "react-spinners";
@@ -71,14 +71,14 @@ function AISqlEntityContainer({}: AISqlEntityContainerProps) {
     });
   }
 
-  useEffect(() => {
-    if (generatedCode.trim().length > 0) {
-      resultSectionRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-      });
-    }
-  }, [generatedCode]);
+  // useEffect(() => {
+  //   if (generatedCode.trim().length > 0) {
+  //     resultSectionRef.current?.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "end",
+  //     });
+  //   }
+  // }, [generatedCode]);
 
   return (
     <>

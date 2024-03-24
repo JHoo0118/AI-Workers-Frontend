@@ -6,6 +6,7 @@ import { useLocale } from "next-intl";
 import Link from "next/link";
 import ThemeToggleButton from "../Button/ThemeToggleButton";
 import Logo from "../Logo/Logo";
+import DrawerSSEButton from "../SSE/DrawerSSEButton";
 import { Button } from "../ui/button";
 import { DropdownIcon } from "./DropdownIcon";
 import NavItem from "./NavItem";
@@ -26,6 +27,7 @@ export default function Navbar() {
         {user ? (
           <div className="flex items-center justify-center">
             <DropdownIcon />
+            <DrawerSSEButton />
             <ThemeToggleButton />
           </div>
         ) : (

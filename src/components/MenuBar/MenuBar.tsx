@@ -4,6 +4,7 @@ import { menus } from "@/lib/data/menu";
 import { Transition } from "@headlessui/react";
 import { usePathname } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
+import DrawerSSEButton from "../SSE/DrawerSSEButton";
 
 export interface MenuBarProps {}
 const MenuBar: React.FC<MenuBarProps> = () => {
@@ -59,26 +60,29 @@ const MenuBar: React.FC<MenuBarProps> = () => {
   };
 
   return (
-    <div>
-      <button
-        onClick={() => {
-          setIsVisable(!isVisable);
-        }}
-        className="flex items-center justify-center rounded-lg p-2.5 text-neutral-700 focus:outline-none dark:text-neutral-300"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-7 w-7"
-          viewBox="0 0 20 20"
-          fill="currentColor"
+    <div className="w-full">
+      <div className="flex w-full items-center justify-between">
+        <button
+          onClick={() => {
+            setIsVisable(!isVisable);
+          }}
+          className="flex items-center justify-center rounded-lg p-2.5 text-neutral-700 focus:outline-none dark:text-neutral-300"
         >
-          <path
-            fillRule="evenodd"
-            d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-            clipRule="evenodd"
-          />
-        </svg>
-      </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-7 w-7"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
+        <DrawerSSEButton />
+      </div>
 
       {renderContent()}
     </div>

@@ -16,19 +16,23 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import useManageTaskEventSource from "@/hooks/useManageTaskEventSource";
 import useMenu from "@/hooks/useMenu";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { framework, getLangByFramework } from "@/lib/data/framework";
 import { cn } from "@/lib/utils/utils";
 import { apiGenSchema } from "@/lib/validation/ai/code/apiGen/apiGenSchema";
-import { apiGenerate } from "@/service/ai/code/apiGen/apiGen";
-import { ApiGenGenerateOutputs } from "@/types/ai-types";
+import { sseEmit } from "@/service/sse/sse";
+import useDrawerStore from "@/store/useDrawerStore";
+import { useTaskListStore } from "@/store/useTaskListStore";
+import { SSEEmitInputs } from "@/types/sse-types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowDownCircleIcon } from "lucide-react";
+import { ArrowDownCircleIcon, WorkflowIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { HashLoader } from "react-spinners";
+import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 
 interface AIApiGenContainerProps {}
@@ -36,6 +40,15 @@ interface AIApiGenContainerProps {}
 function AIApiGenContainer({}: AIApiGenContainerProps) {
   const url = "/ai/code/apigen";
   useRequireAuth({ forwardUrl: url });
+  const { open, setOpen } = useDrawerStore();
+  const {
+    taskList,
+    setTaskList,
+    getTaskByTaskType,
+    checkNotCompletedTaskByTaskType,
+    removeTaskByTaskType,
+  } = useTaskListStore();
+  const [taskId, setTaskId] = useState<string>("");
   const { title, content } = useMenu(url);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [generatedCode, setGeneratedCode] = useState<string>("");
@@ -49,31 +62,71 @@ function AIApiGenContainer({}: AIApiGenContainerProps) {
   const resultSectionRef = useRef<HTMLDivElement>(null);
 
   async function onSubmit(data: z.infer<typeof apiGenSchema>) {
-    setIsLoading(true);
+    // setIsLoading(true);
     setGeneratedCode("");
-    toast.promise(apiGenerate(data), {
-      loading: "생성 중입니다...시간이 1분 정도 소요될 수 있습니다.",
-      success: (data: ApiGenGenerateOutputs) => {
-        const { backendCode } = data;
-        setIsLoading(false);
-        setGeneratedCode(backendCode);
-        return <b>코드가 생성되었습니다.</b>;
-      },
-      error: (error) => {
-        setIsLoading(false);
-        return <b>{error}</b>;
-      },
-    });
+    // toast.promise(apiGenerate(data), {
+    //   loading: "생성 중입니다...시간이 1분 정도 소요될 수 있습니다.",
+    //   success: (data: ApiGenGenerateOutputs) => {
+    //     const { backendCode } = data;
+    //     setIsLoading(false);
+    //     setGeneratedCode(backendCode);
+    //     return <b>코드가 생성되었습니다.</b>;
+    //   },
+    //   error: (error) => {
+    //     setIsLoading(false);
+    //     return <b>{error}</b>;
+    //   },
+    // });
+    // removeTaskByTaskType("TASK_AI_API_GEN");
+    const taskId = uuidv4();
+    const task: SSEEmitInputs = {
+      taskId: taskId,
+      taskType: "TASK_AI_API_GEN",
+      message: "START",
+      createdAt: new Date(),
+      completed: false,
+      requestBody: JSON.stringify(data),
+    };
+    sseEmit(task);
+    setTaskList([
+      task,
+      ...taskList.filter((task) => task.taskType !== "TASK_AI_API_GEN"),
+    ]);
+    setTaskId(taskId);
+    setIsLoading(true);
+    // toast.success("작업을 진행합니다.");
+    toast((t) => (
+      <div>
+        작업을 진행합니다. 우측
+        <Button
+          variant="secondary"
+          size="icon"
+          className="mx-2 cursor-default rounded-full"
+        >
+          <WorkflowIcon className="h-[1.2rem] w-[1.2rem]" />
+          <span className="sr-only">Toggle Workflow</span>
+        </Button>
+        아이콘을 통해 작업 현황을 확인할 수 있습니다.
+      </div>
+    ));
   }
 
   useEffect(() => {
-    if (generatedCode.trim().length > 0) {
-      resultSectionRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-      });
+    const task = getTaskByTaskType("TASK_AI_API_GEN");
+    if (task && task.completed && !!task.result) {
+      setGeneratedCode(task.result!);
     }
-  }, [generatedCode]);
+  }, [taskList, getTaskByTaskType]);
+
+  useEffect(() => {
+    if (checkNotCompletedTaskByTaskType("TASK_AI_API_GEN")) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [taskList, checkNotCompletedTaskByTaskType]);
+
+  useManageTaskEventSource(taskId);
 
   return (
     <>

@@ -23,6 +23,7 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slot": "^1.0.2",
     "@tailwindcss/line-clamp": "^0.4.4",
+    "@tanstack/react-table": "^8.14.0",
     "@types/react-syntax-highlighter": "^15.5.11",
     "@types/uuid": "^9.0.8",
     "ace-builds": "^1.32.6",
@@ -55,7 +56,9 @@
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^9.0.1",
-    "zod": "^3.22.4"
+    "vaul": "^0.9.0",
+    "zod": "^3.22.4",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",

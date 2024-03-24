@@ -99,7 +99,7 @@ const LoginPage = () => {
   return (
     <div className="flex h-full flex-col items-center justify-center">
       <div className="w-full max-w-md space-y-6 rounded-md bg-card p-8 shadow-md dark:bg-secondary">
-        <div className="flex items-center">
+        <div className="flex items-start">
           <Image
             className="mr-4"
             src="/logo.png"
