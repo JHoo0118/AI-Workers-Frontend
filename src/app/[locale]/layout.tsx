@@ -25,7 +25,7 @@ export async function generateMetadata({
       default: t("title"),
       template: `${t("title")} | %s`,
     },
-    metadataBase: new URL(process.env.BASE_API_URL!),
+    metadataBase: new URL(process.env.BASE_URL!),
     description: t("description"),
     openGraph: {
       title: t("title"),
