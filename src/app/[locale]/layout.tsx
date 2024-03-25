@@ -3,6 +3,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import SWRConfigContext from "@/context/SWRConfigContext";
 import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { Open_Sans } from "next/font/google";
+import { Metadata } from "next/types";
 import { Toaster } from "react-hot-toast";
 import { locales } from "../../config";
 import { ThemeProvider } from "./ThemeProvider";
@@ -16,16 +17,23 @@ type Props = {
 
 export async function generateMetadata({
   params: { locale },
-}: Omit<Props, "children">) {
+}: Omit<Props, "children">): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: "LocaleLayout" });
 
   return {
-    // title: t('title')
     title: {
       default: t("title"),
       template: `${t("title")} | %s`,
     },
-    description: t("title"),
+    metadataBase: new URL(process.env.BASE_API_URL!),
+    description: t("description"),
+    openGraph: {
+      title: t("title"),
+      description: t("description"),
+      images: "/logo.png",
+      // <meta property="og:image:width" content="1200" />
+      // <meta property="og:image:height" content="630" />
+    },
   };
 }
 
@@ -42,7 +50,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={openSans.className}>
       <body className="w-full overflow-auto">
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
