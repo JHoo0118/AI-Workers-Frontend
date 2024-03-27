@@ -10,6 +10,15 @@ const nextConfig = {
     keepAlive: true,
   },
   transpilePackages: ["crypto-js"],
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/ko",
+        permanent: true,
+      },
+    ];
+  },
   // i18n: {
   //   locales: ["en", "ko"],
   //   defaultLocale: "en",
