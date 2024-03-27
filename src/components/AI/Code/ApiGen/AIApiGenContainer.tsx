@@ -62,22 +62,7 @@ function AIApiGenContainer({}: AIApiGenContainerProps) {
   const resultSectionRef = useRef<HTMLDivElement>(null);
 
   async function onSubmit(data: z.infer<typeof apiGenSchema>) {
-    // setIsLoading(true);
     setGeneratedCode("");
-    // toast.promise(apiGenerate(data), {
-    //   loading: "생성 중입니다...시간이 1분 정도 소요될 수 있습니다.",
-    //   success: (data: ApiGenGenerateOutputs) => {
-    //     const { backendCode } = data;
-    //     setIsLoading(false);
-    //     setGeneratedCode(backendCode);
-    //     return <b>코드가 생성되었습니다.</b>;
-    //   },
-    //   error: (error) => {
-    //     setIsLoading(false);
-    //     return <b>{error}</b>;
-    //   },
-    // });
-    // removeTaskByTaskType("TASK_AI_API_GEN");
     const taskId = uuidv4();
     const task: SSEEmitInputs = {
       taskId: taskId,
@@ -107,7 +92,7 @@ function AIApiGenContainer({}: AIApiGenContainerProps) {
           <span className="sr-only">Toggle Workflow</span>
         </Button>
         아이콘을 통해 작업 현황을 확인할 수 있습니다.
-        <Button
+        {/* <Button
           variant="default"
           size="sm"
           className="ml-2"
@@ -116,7 +101,7 @@ function AIApiGenContainer({}: AIApiGenContainerProps) {
           }}
         >
           확인
-        </Button>
+        </Button> */}
       </div>
     ));
   }

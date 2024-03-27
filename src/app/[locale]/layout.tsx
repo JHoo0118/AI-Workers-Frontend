@@ -6,6 +6,7 @@ import { Open_Sans } from "next/font/google";
 import { Metadata } from "next/types";
 import { Toaster } from "react-hot-toast";
 import { locales } from "../../config";
+import "../globals.css";
 import { ThemeProvider } from "./ThemeProvider";
 
 const openSans = Open_Sans({ subsets: ["latin"] });
@@ -48,7 +49,7 @@ export default async function LocaleLayout({
   unstable_setRequestLocale(locale);
 
   return (
-    <html lang={locale} className={openSans.className}>
+    <html lang={locale} className={`dark ${openSans.className}`}>
       <body className="w-full overflow-auto">
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link

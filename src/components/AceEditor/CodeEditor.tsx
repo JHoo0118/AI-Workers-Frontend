@@ -38,8 +38,10 @@ import "ace-builds/src-noconflict/snippets/typescript";
 import "ace-builds/src-noconflict/theme-chrome";
 import "ace-builds/src-noconflict/theme-tomorrow_night_eighties";
 import { useTheme } from "next-themes";
+import { useEffect, useRef } from "react";
+import toast from "react-hot-toast";
 
-export const dynamic = "force-dynamic";
+const MAX_LENGTH = 2000;
 interface CodeEditorProps {
   className?: string | undefined;
   value?: string;
@@ -59,9 +61,40 @@ const CodeEditor = ({
   readOnly = false,
   height = "22rem",
 }: CodeEditorProps) => {
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
+
+  const aceEditorRef = useRef<any>(null);
+
+  const handleEditorChange = (value: string) => {
+    const editor = aceEditorRef.current?.editor;
+    if (editor && value.length > MAX_LENGTH) {
+      const newValue = value.substring(0, MAX_LENGTH);
+      editor.getSession().setValue(newValue);
+      editor.navigateFileEnd();
+      editor.clearSelection();
+
+      if (onChange) {
+        onChange(newValue);
+      }
+      toast.error(`최대 ${MAX_LENGTH}자까지 입력할 수 있습니다.`);
+    } else {
+      if (onChange) {
+        onChange(value);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const editor = aceEditorRef.current?.editor;
+    // Perform any setup or add additional event listeners if necessary
+    return () => {
+      // Cleanup if needed
+    };
+  }, []);
+
   return (
     <AceEditor
+      ref={aceEditorRef}
       readOnly={readOnly}
       className={className}
       mode={language.toLowerCase()}
@@ -71,7 +104,7 @@ const CodeEditor = ({
       name="UNIQUE_ID_OF_DIV"
       value={value}
       placeholder={placeholder}
-      onChange={onChange}
+      onChange={handleEditorChange}
       fontSize={14}
       showPrintMargin={true}
       showGutter={true}

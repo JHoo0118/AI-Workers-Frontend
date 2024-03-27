@@ -1,6 +1,9 @@
 "use client";
 
+import useLocaleRedirect from "@/hooks/useLocaleRedirect";
+
 export default function HomeText() {
+  useLocaleRedirect();
   return (
     <div className="mx-auto flex flex-col">
       <h1 className=" text-center text-2xl font-semibold md:text-3xl lg:text-4xl">
