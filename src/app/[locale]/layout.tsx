@@ -50,6 +50,9 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={`dark ${openSans.className}`}>
+      <head>
+        <meta name="google-adsense-account" content="ca-pub-7740654158068459" />
+      </head>
       <body className="w-full overflow-auto">
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link
