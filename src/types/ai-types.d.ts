@@ -15,3 +15,7 @@ export type SeqDiagramGenerateOutputs = ErdGenereateOutputs;
 export type SqlToEntityOutputs = {
   result: string;
 };
+
+export type AlgorithmAdviceGenerateOutputs = {
+  result: string;
+};

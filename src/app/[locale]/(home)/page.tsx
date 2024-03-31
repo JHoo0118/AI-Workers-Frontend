@@ -1,12 +1,14 @@
 import Footer from "@/components/Footer/Footer";
 import GridMenuItem from "@/components/GridMenuItem";
+import HomeFreeSection from "@/components/Home/HomeFreeSection";
+import HomeProsSection from "@/components/Home/HomeProsSection";
 import HomeText from "@/components/Home/HomeText";
 import { gridMenus } from "@/lib/data/menu";
 
 export default function Home() {
   return (
     <>
-      <section className="mx-auto mb-80 flex w-full max-w-screen-2xl flex-col p-4 pt-8">
+      <section className="mx-auto flex w-full max-w-screen-2xl flex-col p-4 py-8">
         <HomeText />
         <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
           {gridMenus.map((gridMenu) => (
@@ -14,6 +16,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+      <HomeProsSection />
+      <HomeFreeSection />
       <Footer />
     </>
   );

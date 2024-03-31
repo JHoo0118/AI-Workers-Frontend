@@ -8,7 +8,7 @@ import React from "react";
 const Footer: React.FC = () => {
   const locale = useLocale();
   return (
-    <footer className="mt-20 bg-gray-100 dark:bg-card">
+    <footer className="bg-gray-100 dark:bg-card">
       <div className="mx-auto max-w-screen-xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="grid gap-14 lg:grid-cols-2 xl:col-span-2">

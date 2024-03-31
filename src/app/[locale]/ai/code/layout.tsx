@@ -13,5 +13,5 @@ export default function CodeLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <section className="px-4">{children}</section>;
+  return <section className="h-full px-4">{children}</section>;
 }

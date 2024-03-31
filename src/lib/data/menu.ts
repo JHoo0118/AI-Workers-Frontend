@@ -77,6 +77,12 @@ const AICodeMenus: Menu[] = [
     content: "SQL문을 입력하시면 Entity Code를 생성해 줍니다.",
     href: "/ai/code/sqlentity",
   },
+  {
+    id: "aicodec4",
+    title: "AI Algorithm 조언",
+    content: "설명을 입력하시면 최적의 알고리즘을 선택하여 조언해 줍니다.",
+    href: "/ai/code/algorithm",
+  },
 ];
 
 const AIDbMenus: Menu[] = [

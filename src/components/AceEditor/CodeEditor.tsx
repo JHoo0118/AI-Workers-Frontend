@@ -41,7 +41,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 
-const MAX_LENGTH = 2000;
+const MAX_LENGTH = 4000;
 interface CodeEditorProps {
   className?: string | undefined;
   value?: string;
