@@ -5,7 +5,7 @@ export default function HomeProsSection() {
     <section className="bg-gray-100 py-8 dark:bg-card sm:py-20">
       <div className="mx-auto max-w-screen-xl px-4">
         <h2 className="text-center text-2xl font-semibold md:text-3xl lg:text-4xl">
-          왜 사용할까요?
+          최고의 작업 도구
         </h2>
         <p className="mt-4 text-center text-lg md:mt-6 md:text-xl">
           AI WORKERS는 웹에서 설치없이 사용할 수 있는 최고의 도구입니다.

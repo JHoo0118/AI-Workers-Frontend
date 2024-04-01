@@ -6,7 +6,7 @@ export default function HomeFreeSection() {
     <section className="px-4 py-8 sm:py-20">
       <div className="flex flex-col items-center justify-center">
         <Image
-          className="mr-4 rounded-3xl"
+          className="rounded-3xl"
           src="/cuteRobot.webp"
           alt="robot"
           width={400}
