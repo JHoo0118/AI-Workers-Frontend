@@ -141,3 +141,13 @@ export const googleLogin = async (): Promise<GoogleLoginOutputs> => {
     },
   });
 };
+
+export async function deleteUser(): Promise<boolean> {
+  return fetchInterceptors({
+    url: "/py-api/auth/leave",
+    options: {
+      method: "DELETE",
+    },
+    isRequiredAccessToken: true,
+  });
+}

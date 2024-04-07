@@ -1,3 +1,4 @@
+import LeaveContainer from "@/components/Account/Settings/LeaveContainer";
 import SettingsContainer from "@/components/Account/Settings/SettingsContainer";
 import type { Metadata } from "next";
 
@@ -14,6 +15,8 @@ export default function SettingsPage() {
     <div>
       <h3>details</h3>
       <SettingsContainer />
+      <h3 className="mt-10">leave</h3>
+      <LeaveContainer />
     </div>
   );
 }
