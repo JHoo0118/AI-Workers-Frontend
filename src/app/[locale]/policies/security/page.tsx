@@ -5,7 +5,7 @@ export default function SecurityPage() {
     <div className="mx-auto w-full max-w-[60rem]">
       <section className="flex w-full flex-col items-center">
         <h3 className="underline">보안</h3>
-        <h1 className="mb-8 mt-4 text-6xl font-bold">
+        <h1 className="mb-8 mt-4 text-4xl font-bold sm:text-6xl">
           데이터 프라이버시 및 보안
         </h1>
         <p className="text-center text-lg">

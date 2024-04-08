@@ -103,7 +103,11 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(cloneUrl);
   }
 
-  if (pathname.indexOf(locale) === -1) {
+  if (
+    pathname.indexOf(locale) === -1 &&
+    !pathname.startsWith("/api") &&
+    !pathname.startsWith("/py-api")
+  ) {
     const cloneUrl = req.nextUrl.clone();
     const originPathname = cloneUrl.pathname;
     cloneUrl.pathname = `/${locale}/${originPathname}`;

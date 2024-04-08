@@ -5,7 +5,7 @@ export default function TermsPage() {
     <div className="mx-auto w-full max-w-[60rem]">
       <section className="flex w-full flex-col items-center">
         <h3 className="underline">법률 & 개인 정보 보호</h3>
-        <h1 className="mb-8 mt-4 text-6xl font-bold">이용약관</h1>
+        <h1 className="mb-8 mt-4 text-4xl font-bold sm:text-6xl">이용약관</h1>
         <p className="text-center text-lg">
           {`AI WORKERS(이 시점부터 "서비스")에 오신 것을 환영합니다. 서비스는 사용자가 온라인 소프트웨어를 통해 문서 및/또는 이미지를 조작할 수 있는 웹을 제공합니다. 현재 이용 약관은 귀하("사용자")와 AI WORKERS의 웹 사이트, 서비스 및 응용 프로그램 간의 법적 구속력이 있는 조건을 규정합니다.`}
         </p>
