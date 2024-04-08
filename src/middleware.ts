@@ -102,6 +102,13 @@ export async function middleware(req: NextRequest) {
     cloneUrl.pathname = `/${locale}`;
     return NextResponse.redirect(cloneUrl);
   }
+
+  if (pathname.indexOf(locale) === -1) {
+    const cloneUrl = req.nextUrl.clone();
+    const originPathname = cloneUrl.pathname;
+    cloneUrl.pathname = `/${locale}/${originPathname}`;
+    return NextResponse.redirect(cloneUrl);
+  }
   return NextResponse.next();
 }
 
