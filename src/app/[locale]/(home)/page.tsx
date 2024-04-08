@@ -15,7 +15,9 @@ export default function Home() {
           {gridMenus.map((gridMenu) => (
             <GridMenuItem menu={gridMenu} key={gridMenu.id} />
           ))}
-          <GoogleAd />
+          <div className="col-span-full row-span-2 sm:col-span-2">
+            <GoogleAd />
+          </div>
         </div>
       </section>
       <HomeProsSection />

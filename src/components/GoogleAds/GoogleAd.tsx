@@ -14,7 +14,7 @@ const GoogleAd = () => {
   }, []);
 
   return (
-    <Card className="flex min-h-36 flex-col justify-start bg-gray-100 dark:bg-card sm:min-h-52 md:min-h-60 md:justify-between">
+    <Card className="flex min-h-60 flex-col justify-start bg-gray-100 dark:bg-card sm:min-h-60 md:min-h-80 md:justify-between">
       <CardContent>
         <ins
           className="adsbygoogle"
