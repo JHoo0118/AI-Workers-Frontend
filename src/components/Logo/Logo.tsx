@@ -16,7 +16,9 @@ const Logo = () => {
           width={28}
           height={28}
         />
-        <h1 className="mr-2 text-3xl font-bold">AI WORKERS</h1>
+        <h1 className="mr-2 text-xl font-bold lg:text-2xl xl:text-3xl">
+          AI WORKERS
+        </h1>
         <Badge variant="default" className="bg-blue-500 hover:bg-blue-500">
           Beta
         </Badge>
