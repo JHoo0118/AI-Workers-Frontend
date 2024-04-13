@@ -28,6 +28,7 @@ const buttonVariants = cva(
         "2xl":
           "min-h-16 sm:min-h-[5rem] rounded-md px-6 sm:px-16 text-xl sm:text-2xl",
         icon: "min-h-10 w-10",
+        "icon-sm": "min-h-8 w-8",
       },
     },
     defaultVariants: {

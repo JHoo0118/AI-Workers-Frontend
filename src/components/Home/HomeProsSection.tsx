@@ -14,7 +14,7 @@ export default function HomeProsSection() {
         </p>
 
         <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          <div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-lg dark:bg-black">
+          <div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-lg dark:bg-background">
             {/* <BedDouble className="mb-6 h-16 w-16" /> */}
             <h3 className="mb-2 text-xl font-semibold">최고의 품질</h3>
             <p className="text-base">
@@ -23,7 +23,7 @@ export default function HomeProsSection() {
             </p>
           </div>
 
-          <div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-lg dark:bg-black">
+          <div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-lg dark:bg-background">
             {/* <Wind className="mb-6 h-16 w-16" /> */}
             <h3 className="mb-2 text-xl font-semibold">쉽고 빠른 사용</h3>
             <p className="text-base">
@@ -31,7 +31,7 @@ export default function HomeProsSection() {
             </p>
           </div>
 
-          <div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-lg dark:bg-black">
+          <div className="flex flex-col items-center rounded-lg bg-white p-6 text-center shadow-lg dark:bg-background">
             {/* <Lock className="mb-6 h-16 w-16" /> */}
             <h3 className="mb-2 text-xl font-semibold">
               데이터 보안 및 무결성

@@ -37,9 +37,11 @@ import "ace-builds/src-noconflict/snippets/swift";
 import "ace-builds/src-noconflict/snippets/typescript";
 import "ace-builds/src-noconflict/theme-chrome";
 import "ace-builds/src-noconflict/theme-tomorrow_night_eighties";
+import { CopyCheckIcon, CopyIcon } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { Button } from "../ui/button";
 
 const MAX_LENGTH = 4000;
 interface CodeEditorProps {
@@ -64,8 +66,12 @@ const CodeEditor = ({
   const { theme } = useTheme();
 
   const aceEditorRef = useRef<any>(null);
+  const [copied, setCopied] = useState<boolean>(false);
 
   const handleEditorChange = (value: string) => {
+    if (copied) {
+      setCopied(false);
+    }
     const editor = aceEditorRef.current?.editor;
     if (editor && value.length > MAX_LENGTH) {
       const newValue = value.substring(0, MAX_LENGTH);
@@ -86,38 +92,59 @@ const CodeEditor = ({
 
   useEffect(() => {
     const editor = aceEditorRef.current?.editor;
-    // Perform any setup or add additional event listeners if necessary
-    return () => {
-      // Cleanup if needed
-    };
+    return () => {};
   }, []);
 
+  function onClickCopy() {
+    const editor = aceEditorRef.current?.editor;
+    const value = editor.getSession().getValue();
+    navigator.clipboard.writeText(value);
+    setCopied(true);
+    toast.success("성공적으로 복사되었습니다.");
+  }
+
   return (
-    <AceEditor
-      ref={aceEditorRef}
-      readOnly={readOnly}
-      className={className}
-      mode={language.toLowerCase()}
-      width="100%"
-      height={height}
-      theme={theme === "dark" ? "tomorrow_night_eighties" : "chrome"}
-      name="UNIQUE_ID_OF_DIV"
-      value={value}
-      placeholder={placeholder}
-      onChange={handleEditorChange}
-      fontSize={14}
-      showPrintMargin={true}
-      showGutter={true}
-      editorProps={{ $blockScrolling: true }}
-      highlightActiveLine={true}
-      setOptions={{
-        enableBasicAutocompletion: true,
-        enableLiveAutocompletion: true,
-        enableSnippets: true,
-        showLineNumbers: true,
-        tabSize: 2,
-      }}
-    />
+    <div className="group relative w-full">
+      <div className="absolute right-2 top-2 z-10 opacity-100 transition-opacity group-hover:opacity-100">
+        <Button
+          onClick={onClickCopy}
+          type="button"
+          variant="outline"
+          size="icon-sm"
+        >
+          {copied ? (
+            <CopyCheckIcon className="h-5 w-5 text-primary" />
+          ) : (
+            <CopyIcon className="h-5 w-5" />
+          )}
+        </Button>
+      </div>
+      <AceEditor
+        ref={aceEditorRef}
+        readOnly={readOnly}
+        className={className}
+        mode={language.toLowerCase()}
+        width="100%"
+        height={height}
+        theme={theme === "dark" ? "tomorrow_night_eighties" : "chrome"}
+        name="UNIQUE_ID_OF_DIV"
+        value={value}
+        placeholder={placeholder}
+        onChange={handleEditorChange}
+        fontSize={14}
+        showPrintMargin={true}
+        showGutter={true}
+        editorProps={{ $blockScrolling: true }}
+        highlightActiveLine={true}
+        setOptions={{
+          enableBasicAutocompletion: true,
+          enableLiveAutocompletion: true,
+          enableSnippets: true,
+          showLineNumbers: true,
+          tabSize: 2,
+        }}
+      />
+    </div>
   );
 };
 
