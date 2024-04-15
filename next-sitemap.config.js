@@ -21,6 +21,7 @@ module.exports = {
       priority: config.priority,
       lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
       alternateRefs: config.alternateRefs ?? [],
+      exclude: ["/ko/account/*", "/en/account/*"],
     };
   },
 };
