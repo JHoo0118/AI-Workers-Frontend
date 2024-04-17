@@ -1,5 +1,6 @@
 "use client";
-import { useEffect } from "react";
+import { useParams } from "next/navigation";
+import { useEffect, useRef } from "react";
 import { Card, CardContent } from "../ui/card";
 
 declare global {
@@ -9,9 +10,24 @@ declare global {
 }
 
 const GoogleAd = () => {
+  const params = useParams();
+  const adsLoaded = useRef(false);
+  // useEffect(() => {
+  //   (window.adsbygoogle = window.adsbygoogle || []).push({});
+  // }, []);
   useEffect(() => {
-    (window.adsbygoogle = window.adsbygoogle || []).push({});
-  }, []);
+    const loadAd = () => {
+      if (typeof window !== "undefined" && window.adsbygoogle) {
+        window.adsbygoogle = window.adsbygoogle || [];
+        window.adsbygoogle.push({});
+        adsLoaded.current = true;
+      }
+    };
+
+    if (params && !adsLoaded.current) {
+      setTimeout(loadAd, 0);
+    }
+  }, [params]);
 
   return (
     <Card className="flex min-h-60 flex-col justify-start bg-gray-100 dark:bg-card sm:min-h-60 md:min-h-80 md:justify-between">

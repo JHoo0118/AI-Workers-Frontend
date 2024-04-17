@@ -3,7 +3,7 @@
 import { ACCESS_TOKEN } from "@/const/const";
 import { hasCookie } from "cookies-next";
 import { useLocale } from "next-intl";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export interface UseRequireAuthProps {
@@ -12,6 +12,7 @@ export interface UseRequireAuthProps {
 
 export const useRequireAuth = ({ forwardUrl }: UseRequireAuthProps) => {
   const router = useRouter();
+  const pathname = usePathname();
   const locale = useLocale();
 
   useEffect(() => {
