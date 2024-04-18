@@ -13,4 +13,5 @@ module.exports = {
       alternateRefs: config.alternateRefs ?? [],
     };
   },
+  exclude: ["/ko/account/*", "/en/account/*"],
 };

@@ -81,6 +81,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     await toast.promise(signupService(signupSchemaInputs), {
       loading: "처리 중...",
       success: (data: SignupOutputs) => {
+        router.prefetch(`/${locale}/`);
         return <b>회원가입이 완료되었습니다.</b>;
       },
       error: (error) => <b>{error}</b>,
@@ -93,6 +94,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     await toast.promise(loginService(loginSchemaInputs), {
       loading: "처리 중...",
       success: (data: LoginOutputs) => {
+        router.prefetch(forwardurl ?? `/${locale}`);
         return <b>로그인에 성공하였습니다.</b>;
       },
       error: (error) => <b>{error || "로그인에 실패하였습니다."}</b>,
