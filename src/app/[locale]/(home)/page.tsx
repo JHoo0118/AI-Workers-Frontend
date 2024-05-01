@@ -1,5 +1,4 @@
 import Footer from "@/components/Footer/Footer";
-import GoogleAd from "@/components/GoogleAds/GoogleAd";
 import GridMenuItem from "@/components/GridMenuItem";
 import HomeFreeSection from "@/components/Home/HomeFreeSection";
 import HomeProsSection from "@/components/Home/HomeProsSection";
@@ -15,9 +14,9 @@ export default function Home() {
           {gridMenus.map((gridMenu) => (
             <GridMenuItem menu={gridMenu} key={gridMenu.id} />
           ))}
-          <div className="col-span-full row-span-2 sm:col-span-2">
+          {/* <div className="col-span-full row-span-2 sm:col-span-2">
             <GoogleAd />
-          </div>
+          </div> */}
         </div>
       </section>
       <HomeProsSection />
