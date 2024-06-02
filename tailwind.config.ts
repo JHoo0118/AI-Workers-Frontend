@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      fontSize: {
+        xxs: "0.6rem",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

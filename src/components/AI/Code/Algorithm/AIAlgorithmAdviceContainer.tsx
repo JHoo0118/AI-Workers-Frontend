@@ -24,6 +24,7 @@ function AIAlgorithmAdviceContainer({}: AIAlgorithmAdviceContainerProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const [lang, setLang] = useState<string>("python");
+  const [hasUserScrolled, setHasUserScrolled] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -32,6 +33,7 @@ function AIAlgorithmAdviceContainer({}: AIAlgorithmAdviceContainerProps) {
     chatRequestOptions?: ChatRequestOptions,
   ) {
     e.preventDefault();
+    setHasUserScrolled(false);
     const ok: boolean = await isAuthenticated();
     try {
       if (ok) {
@@ -97,10 +99,30 @@ function AIAlgorithmAdviceContainer({}: AIAlgorithmAdviceContainerProps) {
   }, [setMessages]);
 
   useEffect(() => {
-    if (scrollRef.current) {
+    const handleUserScroll = () => {
+      if (!hasUserScrolled && scrollRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+        if (scrollTop + clientHeight < scrollHeight) {
+          setHasUserScrolled(true);
+        }
+      }
+    };
+
+    const currentScrollRef = scrollRef.current;
+    if (currentScrollRef) {
+      currentScrollRef.addEventListener("scroll", handleUserScroll);
+
+      return () => {
+        currentScrollRef.removeEventListener("scroll", handleUserScroll);
+      };
+    }
+  }, [hasUserScrolled]);
+
+  useEffect(() => {
+    if (!hasUserScrolled && scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, hasUserScrolled]);
 
   function onStop() {
     setIsStreaming(false);

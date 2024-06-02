@@ -19,3 +19,16 @@ export type SqlToEntityOutputs = {
 export type AlgorithmAdviceGenerateOutputs = {
   result: string;
 };
+
+export type DocsServeAgentEmbedOutputs = {
+  path: string;
+};
+
+export type DocsServeAgentOutputs = {
+  content: DocsServeAgentResponse[];
+};
+
+type DocsServeAgentResponse = {
+  page: string;
+  summary: string;
+};

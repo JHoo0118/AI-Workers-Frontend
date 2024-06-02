@@ -7,7 +7,7 @@ import Navbar from "../Navigation/Navbar";
 
 export default function MainHeader() {
   const pathname = usePathname();
-  const doNotShowHeaders = ["/login", "/signup", "/account"];
+  const doNotShowHeaders = ["/login", "/signup", "/account", "portfolio"];
   const showHeader = doNotShowHeaders.some((path: string) =>
     pathname.includes(path),
   )

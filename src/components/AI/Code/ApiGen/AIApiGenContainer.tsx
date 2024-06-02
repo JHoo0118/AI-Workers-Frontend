@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { TASK_AI_API_GEN } from "@/const/const";
 import useManageTaskEventSource from "@/hooks/useManageTaskEventSource";
 import useMenu from "@/hooks/useMenu";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
@@ -47,6 +48,9 @@ function AIApiGenContainer({}: AIApiGenContainerProps) {
     getTaskByTaskType,
     checkNotCompletedTaskByTaskType,
     removeTaskByTaskType,
+    removeEventSource,
+    removeBackupData,
+    removeBackupDataByTaskType,
   } = useTaskListStore();
   const [taskId, setTaskId] = useState<string>("");
   const { title, content } = useMenu(url);
@@ -66,16 +70,17 @@ function AIApiGenContainer({}: AIApiGenContainerProps) {
     const taskId = uuidv4();
     const task: SSEEmitInputs = {
       taskId: taskId,
-      taskType: "TASK_AI_API_GEN",
+      taskType: TASK_AI_API_GEN,
       message: "START",
       createdAt: new Date(),
       completed: false,
       requestBody: JSON.stringify(data),
     };
+    removeCache();
     sseEmit(task);
     setTaskList([
       task,
-      ...taskList.filter((task) => task.taskType !== "TASK_AI_API_GEN"),
+      ...taskList.filter((task) => task.taskType !== TASK_AI_API_GEN),
     ]);
     setTaskId(taskId);
     setIsLoading(true);
@@ -91,7 +96,8 @@ function AIApiGenContainer({}: AIApiGenContainerProps) {
           <WorkflowIcon className="h-[1.2rem] w-[1.2rem]" />
           <span className="sr-only">Toggle Workflow</span>
         </Button>
-        아이콘을 통해 작업 현황을 확인할 수 있습니다.
+        아이콘을 통해 작업 현황을 확인할 수 있습니다. 이제 현재 페이지를
+        벗어나셔도 됩니다.
         {/* <Button
           variant="default"
           size="sm"
@@ -122,6 +128,18 @@ function AIApiGenContainer({}: AIApiGenContainerProps) {
   }, [taskList, checkNotCompletedTaskByTaskType]);
 
   useManageTaskEventSource(taskId);
+
+  function removeCache() {
+    setGeneratedCode("");
+    const task = getTaskByTaskType(TASK_AI_API_GEN);
+    if (task) {
+      removeTaskByTaskType(TASK_AI_API_GEN);
+      removeEventSource(task.taskId);
+    }
+    removeBackupData(taskId);
+    removeBackupDataByTaskType(TASK_AI_API_GEN);
+    setTaskId("");
+  }
 
   return (
     <>

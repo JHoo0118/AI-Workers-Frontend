@@ -9,7 +9,7 @@ export type SSETask = {
   completedAt?: Date;
 };
 
-export type SSETaskType = "TASK_AI_API_GEN";
+export type SSETaskType = "TASK_AI_API_GEN" | "TASK_AI_DOCS_SUMMARY_SERVE";
 
 export type SSEEmitInputs = SSETask & {
   requestBody: any;

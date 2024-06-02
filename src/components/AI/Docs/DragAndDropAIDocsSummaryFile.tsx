@@ -47,12 +47,14 @@ function DragAndDropAIDocsSummaryFile({
   messages: initialMessages,
 }: DragAndDropAIDocsSummaryFileProps) {
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
+  const [hasUserScrolled, setHasUserScrolled] = useState(false);
 
   async function handleSubmitWrapper(
     e: React.FormEvent<HTMLFormElement>,
     chatRequestOptions?: ChatRequestOptions,
   ) {
     e.preventDefault();
+    setHasUserScrolled(false);
     const ok: boolean = await isAuthenticated();
     try {
       if (ok) {
@@ -109,10 +111,30 @@ function DragAndDropAIDocsSummaryFile({
   });
 
   useEffect(() => {
-    if (scrollRef.current) {
+    const handleUserScroll = () => {
+      if (!hasUserScrolled && scrollRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+        if (scrollTop + clientHeight < scrollHeight) {
+          setHasUserScrolled(true);
+        }
+      }
+    };
+
+    const currentScrollRef = scrollRef.current;
+    if (currentScrollRef) {
+      currentScrollRef.addEventListener("scroll", handleUserScroll);
+
+      return () => {
+        currentScrollRef.removeEventListener("scroll", handleUserScroll);
+      };
+    }
+  }, [hasUserScrolled]);
+
+  useEffect(() => {
+    if (!hasUserScrolled && scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, hasUserScrolled]);
 
   useEffect(() => {
     if (completedFile) {

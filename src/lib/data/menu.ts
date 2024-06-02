@@ -29,7 +29,7 @@ const pdfMenus: Menu[] = [
 const AIDocsMenus: Menu[] = [
   {
     id: "aidocsc1",
-    title: "AI 문서 요약 & 질문",
+    title: "AI 문서 요약 & 질문 (Streaming)",
     content:
       "AI가 원하는 문서를 요약해 줍니다. AI에게 요약된 문서에 대해 질문해 보세요.",
     href: "/ai/docs/summary",
@@ -40,6 +40,13 @@ const AIDocsMenus: Menu[] = [
     content:
       "문서 요약 Agent가 원하는 문서를 요약해 줍니다. 요약된 문서에 대해 질문해 보세요.",
     href: "/ai/docs/summary-agent",
+  },
+  {
+    id: "aidocsc3",
+    title: "AI 문서 요약 제공",
+    content:
+      "문서 요약 Agent가 원하는 문서를 요약하여 요약 내용을 제공해 줍니다.",
+    href: "/ai/docs/summary-serve-agent",
   },
 ];
 
