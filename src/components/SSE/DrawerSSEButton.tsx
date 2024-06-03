@@ -51,9 +51,11 @@ export default function DrawerSSEButton() {
             <DrawerDescription>
               현재 진행 중인 작업의 목록을 볼 수 있습니다.
               <span className="pl-1 font-semibold">
-                작업에 시간이 많이 소요되는 일부 작업만 표시됩니다. (현재는{" "}
-                <span className="text-primary ">AI Backend Code 생성</span>만
-                지원)
+                작업에 시간이 많이 소요되는 일부 작업만 표시됩니다. (현재{" "}
+                <span className="text-primary ">
+                  AI Backend Code 생성, AI 문서 요약 제공 서비스
+                </span>
+                만 지원)
               </span>
             </DrawerDescription>
           </DrawerHeader>

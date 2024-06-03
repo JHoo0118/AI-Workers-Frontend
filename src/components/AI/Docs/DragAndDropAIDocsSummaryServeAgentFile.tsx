@@ -85,8 +85,8 @@ function DragAndDropAIDocsSummaryServeAgentFile({
 
   async function handleSubmitAIDocsSummary(e: React.SyntheticEvent) {
     e.preventDefault();
-    if (numPages > 10) {
-      toast.error("현재 요약 기능은 총 10페이지 이하의 PDF 파일만 가능합니다.");
+    if (numPages > 5) {
+      toast.error("현재 요약 기능은 총 5페이지 이하의 PDF 파일만 가능합니다.");
       return;
     }
     const taskId = uuidv4();
