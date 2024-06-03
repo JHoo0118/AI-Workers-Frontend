@@ -87,6 +87,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       error: (error) => <b>{error}</b>,
     });
     router.replace(`/${locale}/`);
+    router.refresh();
     await getUser();
   };
 
