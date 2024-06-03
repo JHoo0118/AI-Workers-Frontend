@@ -1,5 +1,6 @@
 "use client";
 import Loading from "@/components/Loading/Loading";
+import MarkdownRenderer from "@/components/Markdown/MarkdownRenderer";
 import PdfRenderer from "@/components/Pdf/PdfRenderer";
 import {
   Accordion,
@@ -217,21 +218,23 @@ function DragAndDropAIDocsSummaryServeAgentFile({
         )}
       >
         {files?.length > 0 && (
-          <div className="flex h-full flex-col sm:flex-row">
-            <div className="w-1/2 flex-1 bg-gray-300 dark:bg-secondary">
-              <div className="flex justify-center space-x-4 px-4 py-4">
+          <div className="relative h-full overflow-y-auto lg:flex lg:flex-row lg:overflow-y-hidden">
+            <div className="h-auto w-full flex-1 bg-gray-300 dark:bg-secondary lg:h-full lg:max-h-none lg:w-1/2">
+              <div className="flex items-center justify-center space-x-4 px-2 py-2 lg:px-3 lg:py-3">
                 <Button
                   disabled={pageNumber <= 1}
+                  size="sm"
                   onClick={() => setPageNumber(pageNumber - 1)}
                   className="disabled:opacity-50"
                 >
                   이전
                 </Button>
-                <p className="px-4 py-2">
+                <p className="px-4 text-xs lg:text-lg">
                   Page {pageNumber} of {numPages}
                 </p>
                 <Button
                   disabled={pageNumber >= numPages}
+                  size="sm"
                   onClick={() => setPageNumber(pageNumber + 1)}
                   className="disabled:opacity-50"
                 >
@@ -248,6 +251,7 @@ function DragAndDropAIDocsSummaryServeAgentFile({
                 />
                 <Button
                   className="bg-blue-500 hover:bg-blue-600"
+                  size="sm"
                   onClick={handlePageChange}
                 >
                   이동
@@ -261,11 +265,13 @@ function DragAndDropAIDocsSummaryServeAgentFile({
                 setPageNumber={setPageNumber}
               />
             </div>
-            <div className="w-1/2 border-l-2">
-              <div className="flex h-full w-full flex-col justify-between">
+            <div className="h-1/2 w-full border-l-2 lg:h-full lg:w-1/2">
+              <div className="flex w-full flex-col justify-between lg:h-full">
                 <div className="flex flex-col">
                   <div className="mx-auto w-full">
-                    <h1 className="mb-2 mt-2 text-3xl">{title}</h1>
+                    <h1 className="px-2 py-2 text-3xl lg:px-4 lg:py-4">
+                      {title}
+                    </h1>
                     <Card className="rounded-none">
                       <CardContent
                         className={cn(
@@ -294,19 +300,21 @@ function DragAndDropAIDocsSummaryServeAgentFile({
                     />
                   </div>
                 </div>
-                <div className="flex h-full w-full flex-col items-center justify-center overflow-y-auto bg-gray-100 dark:bg-neutral-800">
+                <div className="flex min-h-[200px] w-full flex-col items-center justify-center overflow-y-auto bg-gray-100 dark:bg-neutral-800 lg:h-full lg:min-h-0">
                   {!content ? (
                     loading ? (
                       <>
                         <Loading message="요약 중입니다." />
                       </>
                     ) : (
-                      <>
-                        <div className="mb-4">
-                          <BotIcon className="h-24 w-24" />
+                      <div className="flex flex-col items-center justify-center py-2">
+                        <div className="mb-2 lg:mb-4">
+                          <BotIcon className="h-12 w-12 lg:h-24 lg:w-24" />
                         </div>
-                        <h1 className="text-2xl">문서를 요약해 보세요</h1>
-                      </>
+                        <h1 className="text-sm lg:text-2xl">
+                          문서를 요약해 보세요
+                        </h1>
+                      </div>
                     )
                   ) : (
                     <div className="mx-auto flex h-full w-full flex-col justify-between rounded-lg bg-gray-100 dark:bg-neutral-800">
@@ -324,7 +332,7 @@ function DragAndDropAIDocsSummaryServeAgentFile({
                                 페이지 {parseInt(data.page) + 1}
                               </AccordionTrigger>
                               <AccordionContent className="text-start">
-                                <span>{data.summary}</span>
+                                <MarkdownRenderer content={data.summary} />
                                 <div className="mt-4 flex space-x-4">
                                   <Button
                                     onClick={() => onClickCopy(data.summary)}

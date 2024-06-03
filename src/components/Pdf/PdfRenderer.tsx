@@ -31,6 +31,10 @@ const PdfRenderer = ({
   setPageNumber,
 }: PdfRendererProps) => {
   const [uint8Arr, setUint8Arr] = useState<Uint8Array>();
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
@@ -46,7 +50,12 @@ const PdfRenderer = ({
     }),
     [acceptedFile],
   );
-  const onResize = useCallback(() => {}, []);
+  const onResize = useCallback(() => {
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  }, []);
 
   const { width, height, ref } = useResizeDetector({
     handleHeight: true,
@@ -85,7 +94,7 @@ const PdfRenderer = ({
         loading={false}
         error={false}
         onLoadSuccess={onDocumentLoadSuccess}
-        className="flex h-full justify-center overflow-auto"
+        className="flex h-full justify-center overflow-y-hidden lg:overflow-auto"
       >
         <Page pageNumber={pageNumber} width={width} height={height}></Page>
       </Document>
