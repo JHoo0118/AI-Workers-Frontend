@@ -113,21 +113,24 @@ function DragAndDropAIDocsSummaryServeAgentFile({
     setTaskId(taskId);
     setBackupData(taskId, files);
 
-    toast((t) => (
-      <div>
-        작업을 진행합니다. 우측
-        <Button
-          variant="secondary"
-          size="icon"
-          className="mx-2 cursor-default rounded-full"
-        >
-          <WorkflowIcon className="h-[1.2rem] w-[1.2rem]" />
-          <span className="sr-only">Toggle Workflow</span>
-        </Button>
-        아이콘을 통해 작업 현황을 확인할 수 있습니다. 이제 현재 페이지를
-        벗어나셔도 됩니다.
-      </div>
-    ));
+    toast(
+      (t) => (
+        <div>
+          작업을 진행합니다. 우측
+          <Button
+            variant="secondary"
+            size="icon"
+            className="mx-2 cursor-default rounded-full"
+          >
+            <WorkflowIcon className="h-[1.2rem] w-[1.2rem]" />
+            <span className="sr-only">Toggle Workflow</span>
+          </Button>
+          아이콘을 통해 작업 현황을 확인할 수 있습니다. 이제 현재 페이지를
+          벗어나셔도 됩니다.
+        </div>
+      ),
+      { duration: 5000 },
+    );
     setLoading(true);
   }
 
@@ -168,7 +171,9 @@ function DragAndDropAIDocsSummaryServeAgentFile({
   };
 
   const handlePageChange = () => {
-    const page = parseInt(inputPageNumber, 10);
+    let page = parseInt(inputPageNumber, 10);
+    page = page > numPages ? numPages : page === 0 ? 1 : page;
+    setInputPageNumber(`${page}`);
     if (page >= 1 && page <= (numPages || 0)) {
       setPageNumber(page);
     }
@@ -263,6 +268,8 @@ function DragAndDropAIDocsSummaryServeAgentFile({
                 setNumPages={setNumPages}
                 pageNumber={pageNumber}
                 setPageNumber={setPageNumber}
+                inputPageNumber={inputPageNumber}
+                setInputPageNumber={setInputPageNumber}
               />
             </div>
             <div className="h-1/2 w-full border-l-2 lg:h-full lg:w-1/2">
@@ -396,7 +403,7 @@ function DragAndDropAIDocsSummaryServeAgentFile({
                     type="submit"
                     disabled={loading}
                   >
-                    페이지 요약하기
+                    전체 페이지 요약하기
                   </Button>
                 </form>
               </div>

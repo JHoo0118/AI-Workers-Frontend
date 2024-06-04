@@ -20,6 +20,12 @@ const pdfMenus: Menu[] = [
   },
   {
     id: "pc2",
+    title: "PDF 분할",
+    content: "페이지 범위를 선택하여, 원하는대로 PDF를 분할하세요.",
+    href: "/pdf/split",
+  },
+  {
+    id: "pc3",
     title: "PDF WORD 변환",
     content: "PDF에서 WORD로 문서를 변환하세요.",
     href: "/pdf/pdf_to_word",

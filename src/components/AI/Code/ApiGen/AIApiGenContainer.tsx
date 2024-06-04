@@ -85,20 +85,21 @@ function AIApiGenContainer({}: AIApiGenContainerProps) {
     setTaskId(taskId);
     setIsLoading(true);
     // toast.success("작업을 진행합니다.");
-    toast((t) => (
-      <div>
-        작업을 진행합니다. 우측
-        <Button
-          variant="secondary"
-          size="icon"
-          className="mx-2 cursor-default rounded-full"
-        >
-          <WorkflowIcon className="h-[1.2rem] w-[1.2rem]" />
-          <span className="sr-only">Toggle Workflow</span>
-        </Button>
-        아이콘을 통해 작업 현황을 확인할 수 있습니다. 이제 현재 페이지를
-        벗어나셔도 됩니다.
-        {/* <Button
+    toast(
+      (t) => (
+        <div>
+          작업을 진행합니다. 우측
+          <Button
+            variant="secondary"
+            size="icon"
+            className="mx-2 cursor-default rounded-full"
+          >
+            <WorkflowIcon className="h-[1.2rem] w-[1.2rem]" />
+            <span className="sr-only">Toggle Workflow</span>
+          </Button>
+          아이콘을 통해 작업 현황을 확인할 수 있습니다. 이제 현재 페이지를
+          벗어나셔도 됩니다.
+          {/* <Button
           variant="default"
           size="sm"
           className="ml-2"
@@ -108,8 +109,10 @@ function AIApiGenContainer({}: AIApiGenContainerProps) {
         >
           확인
         </Button> */}
-      </div>
-    ));
+        </div>
+      ),
+      { duration: 5000 },
+    );
   }
 
   useEffect(() => {

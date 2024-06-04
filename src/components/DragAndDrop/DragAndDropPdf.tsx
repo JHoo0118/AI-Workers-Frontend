@@ -21,6 +21,7 @@ interface DragAndDropPdfProps {
   multiple?: boolean;
   sortable?: boolean;
   loading?: boolean;
+  setLastPage?: (lastPage: number) => void;
 }
 
 function DragAndDropPdf({
@@ -39,6 +40,7 @@ function DragAndDropPdf({
   multiple = true,
   sortable = true,
   loading = false,
+  setLastPage,
 }: DragAndDropPdfProps) {
   return (
     <form
@@ -87,12 +89,14 @@ function DragAndDropPdf({
                       <PdfSortableListDragHandleItem
                         acceptedFile={acceptedFile}
                         sortable={sortable}
+                        setLastPage={setLastPage}
                       />
                     </SortableList.DragHandle>
                   ) : (
                     <PdfSortableListDragHandleItem
                       acceptedFile={acceptedFile}
                       sortable={sortable}
+                      setLastPage={setLastPage}
                     />
                   )}
                 </SortableList.Item>

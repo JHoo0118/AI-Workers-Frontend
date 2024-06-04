@@ -9,13 +9,13 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import useSWR from "swr";
 
-interface PdfToWordResultPageProps {
+interface PdfSplitResultPageProps {
   params: { filename: string };
 }
 
-export default function PdfToWordResultPage({
+export default function PdfSplitResultPage({
   params: { filename },
-}: PdfToWordResultPageProps) {
+}: PdfSplitResultPageProps) {
   const router = useRouter();
   const { data, isLoading, error } = useSWR<IsFileExistOutputs>(
     `/py-api/file/exist?filename=${filename}`,
@@ -40,7 +40,7 @@ export default function PdfToWordResultPage({
     });
   }
 
-  async function handleSubmitDownloadDocxFiles() {
+  async function handleSubmitDownloadSplitFiles() {
     const blob = await fileDonwload({
       filename,
     });
@@ -68,17 +68,17 @@ export default function PdfToWordResultPage({
             {isLoading
               ? "파일 확인 중..."
               : data?.isExist
-                ? "WORD로 변환되었습니다!"
-                : "변환된 파일을 찾을 수 없습니다."}
+                ? "PDF가 분할되었습니다!"
+                : "분할된 파일을 찾을 수 없습니다."}
           </h1>
           <Button
-            onClick={handleSubmitDownloadDocxFiles}
+            onClick={handleSubmitDownloadSplitFiles}
             disabled={isLoading || data?.isExist != true}
             type="button"
             size="2xl"
             variant="default"
           >
-            <Download className="mr-2" /> 변환된 WORD 다운로드
+            <Download className="mr-2" /> 분할된 PDF 다운로드
           </Button>
         </div>
         <div

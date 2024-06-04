@@ -5,11 +5,13 @@ import PdfAsImage from "./PdfAsImage";
 interface PdfSortableListDragHandleItemProps {
   acceptedFile: AcceptedFile;
   sortable: boolean;
+  setLastPage?: (lastPage: number) => void;
 }
 
 export default function PdfSortableListDragHandleItem({
   acceptedFile,
   sortable,
+  setLastPage,
 }: PdfSortableListDragHandleItemProps) {
   return (
     <div
@@ -18,7 +20,10 @@ export default function PdfSortableListDragHandleItem({
         sortable ? "cursor-grab" : "cursor-default",
       )}
     >
-      <PdfAsImage acceptedFile={acceptedFile}></PdfAsImage>
+      <PdfAsImage
+        acceptedFile={acceptedFile}
+        setLastPage={setLastPage}
+      ></PdfAsImage>
       <h1 className="truncate text-sm">{acceptedFile.file.name}</h1>
     </div>
   );

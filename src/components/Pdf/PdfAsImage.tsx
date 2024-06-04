@@ -15,6 +15,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
 
 interface PdfAsImageProps {
   acceptedFile: AcceptedFile;
+  setLastPage?: (lastPage: number) => void;
 }
 
 const options = {
@@ -24,7 +25,7 @@ const options = {
   standardFontDataUrl: "standard_fonts/",
 };
 
-function PdfAsImage({ acceptedFile }: PdfAsImageProps) {
+function PdfAsImage({ acceptedFile, setLastPage }: PdfAsImageProps) {
   const [numPages, setNumPages] = useState<number>();
   const [uint8Arr, setUint8Arr] = useState<Uint8Array>();
   const onResize = useCallback(() => {
@@ -67,6 +68,9 @@ function PdfAsImage({ acceptedFile }: PdfAsImageProps) {
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
+    if (!!setLastPage) {
+      setLastPage(numPages);
+    }
   }
 
   return (

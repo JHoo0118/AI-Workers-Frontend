@@ -28,6 +28,7 @@ export interface DragAndDropFilesComponentProps {
   acceptedFileType: string;
   maxAllowedFileCount?: number;
   maxAllowedFileSize?: number;
+  maxAllowedFilePaceCount?: number;
   multiple?: boolean;
 }
 

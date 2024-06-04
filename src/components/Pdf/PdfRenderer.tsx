@@ -14,6 +14,8 @@ interface PdfRendererProps {
   setNumPages: (numPages: number) => void;
   pageNumber: number;
   setPageNumber: (pageNumber: number) => void;
+  inputPageNumber: string;
+  setInputPageNumber: (inputPageNumber: string) => void;
 }
 
 const options = {
@@ -29,6 +31,7 @@ const PdfRenderer = ({
   setNumPages,
   pageNumber,
   setPageNumber,
+  setInputPageNumber,
 }: PdfRendererProps) => {
   const [uint8Arr, setUint8Arr] = useState<Uint8Array>();
   const [windowSize, setWindowSize] = useState({
@@ -38,6 +41,8 @@ const PdfRenderer = ({
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
+    setPageNumber(1);
+    setInputPageNumber("1");
   }
 
   const handleResize = useCallback(() => {
