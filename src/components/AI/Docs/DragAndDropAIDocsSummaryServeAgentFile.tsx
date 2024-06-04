@@ -302,6 +302,7 @@ function DragAndDropAIDocsSummaryServeAgentFile({
                       multiple={false}
                       onChange={(e) => {
                         handleChange(e);
+                        removeCache();
                       }}
                       accept={acceptedFileType}
                     />
