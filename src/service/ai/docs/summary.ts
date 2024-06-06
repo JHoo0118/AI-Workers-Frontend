@@ -57,7 +57,7 @@ export async function docsServeAgent(
   formData.append("file", file);
 
   return fetchInterceptors({
-    url: "/py-api/ai/docs/summary/serve",
+    url: "/py-api/ai/docs/ask/serve",
     options: {
       method: "POST",
       body: formData,

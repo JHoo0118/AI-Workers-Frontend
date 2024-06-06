@@ -12,6 +12,7 @@ import Link from "next/link";
 import React from "react";
 import ThemeToggleButton from "../Button/ThemeToggleButton";
 import { Button } from "../ui/button";
+import RemainCountIcon from "./RemainCountIcon";
 
 export interface NavMobileProps {
   data: Menu[];
@@ -189,6 +190,10 @@ const NavMobile: React.FC<NavMobileProps> = ({ data, onClickClose }) => {
       {user ? (
         <div className="flex items-center px-4 py-2">
           <ThemeToggleButton />
+          <RemainCountIcon
+            className="ml-4"
+            remainCount={user.remainCount ?? 0}
+          />
         </div>
       ) : (
         <div className="flex items-center px-4 py-2">

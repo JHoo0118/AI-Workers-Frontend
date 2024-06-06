@@ -10,6 +10,7 @@ import DrawerSSEButton from "../SSE/DrawerSSEButton";
 import { Button } from "../ui/button";
 import { DropdownIcon } from "./DropdownIcon";
 import NavItem from "./NavItem";
+import RemainCountIcon from "./RemainCountIcon";
 
 export default function Navbar() {
   const user = useUserStore((state) => state.user);
@@ -26,6 +27,7 @@ export default function Navbar() {
         </ul>
         {user ? (
           <div className="flex items-center justify-center">
+            <RemainCountIcon remainCount={user.remainCount ?? 0} />
             <DropdownIcon />
             <DrawerSSEButton />
             <ThemeToggleButton />

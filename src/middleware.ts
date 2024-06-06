@@ -64,7 +64,6 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { locales, pathnames } from "./config";
 import { ACCESS_TOKEN } from "./const/const";
-import { deleteTokens } from "./lib/utils/auth";
 
 export default createMiddleware({
   defaultLocale: "ko",
@@ -79,6 +78,8 @@ export async function middleware(req: NextRequest) {
   const accessToken = cookieStore.get(ACCESS_TOKEN)?.value;
   const locale = "ko";
 
+  console.log(pathname);
+
   if (
     accessToken &&
     (pathname.indexOf("/login") !== -1 || pathname.indexOf("/signup") !== -1)
@@ -87,16 +88,16 @@ export async function middleware(req: NextRequest) {
   }
   // const loginUrl = new URL(`${basePath}/login`, origin);
   // Protected paths requiring authentication
-  if (pathname.indexOf("/ai") !== -1 || pathname.indexOf("/account") !== -1) {
-    if (!accessToken) {
-      deleteTokens();
-      const forwardUrl = req.nextUrl.clone();
-      forwardUrl.pathname = `/${locale}/login`;
-      forwardUrl.searchParams.set("forwardUrl", req.nextUrl.pathname);
+  // if (pathname.indexOf("/ai/") !== -1 || pathname.indexOf("/account") !== -1) {
+  //   if (!accessToken) {
+  //     deleteTokens();
+  //     const forwardUrl = req.nextUrl.clone();
+  //     forwardUrl.pathname = `/${locale}/login`;
+  //     forwardUrl.searchParams.set("forwardUrl", req.nextUrl.pathname);
 
-      return NextResponse.redirect(forwardUrl);
-    }
-  }
+  //     return NextResponse.redirect(forwardUrl);
+  //   }
+  // }
   if (pathname === "/") {
     const cloneUrl = req.nextUrl.clone();
     cloneUrl.pathname = `/${locale}`;

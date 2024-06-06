@@ -1,4 +1,5 @@
 import AIDBSqlContainer from "@/components/AI/DB/SQL/AIDBSqlContainer";
+import AuthGuard from "@/components/Auth/AuthGuard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,7 +7,12 @@ export const metadata: Metadata = {
 };
 
 function AIDBSqlPage() {
-  return <AIDBSqlContainer />;
+  const forwardUrl = "/ai/db/sql";
+  return (
+    <AuthGuard forwardUrl={forwardUrl}>
+      <AIDBSqlContainer url={forwardUrl} />
+    </AuthGuard>
+  );
 }
 
 export default AIDBSqlPage;

@@ -9,7 +9,7 @@ import { getCookie } from "cookies-next";
 import { useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import toast from "react-hot-toast";
+import toast, { Toast } from "react-hot-toast";
 
 /**
  * Custom hook to manage an EventSource connection for a specific task.
@@ -91,7 +91,7 @@ const useManageTaskEventSource = (taskId: string) => {
                     ) as SSEEmitOutputs;
                     if (data.completed) {
                       updateTask(data);
-                      toast((t) => (
+                      toast((t: Toast) => (
                         <span>
                           진행 중인 작업이 완료되었습니다.
                           <Button

@@ -19,13 +19,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { TASK_AI_API_GEN } from "@/const/const";
 import useManageTaskEventSource from "@/hooks/useManageTaskEventSource";
 import useMenu from "@/hooks/useMenu";
-import { useRequireAuth } from "@/hooks/useRequireAuth";
+import { useThrottle } from "@/hooks/useThrottle";
 import { framework, getLangByFramework } from "@/lib/data/framework";
 import { cn } from "@/lib/utils/utils";
 import { apiGenSchema } from "@/lib/validation/ai/code/apiGen/apiGenSchema";
 import { sseEmit } from "@/service/sse/sse";
 import useDrawerStore from "@/store/useDrawerStore";
 import { useTaskListStore } from "@/store/useTaskListStore";
+import useUserStore from "@/store/userStore";
 import { SSEEmitInputs } from "@/types/sse-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowDownCircleIcon, WorkflowIcon } from "lucide-react";
@@ -36,11 +37,11 @@ import { HashLoader } from "react-spinners";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 
-interface AIApiGenContainerProps {}
+interface AIApiGenContainerProps {
+  url: string;
+}
 
-function AIApiGenContainer({}: AIApiGenContainerProps) {
-  const url = "/ai/code/apigen";
-  useRequireAuth({ forwardUrl: url });
+function AIApiGenContainer({ url }: AIApiGenContainerProps) {
   const { open, setOpen } = useDrawerStore();
   const {
     taskList,
@@ -64,8 +65,20 @@ function AIApiGenContainer({}: AIApiGenContainerProps) {
     },
   });
   const resultSectionRef = useRef<HTMLDivElement>(null);
+  const { user, recalculateRemainCount } = useUserStore((state) => ({
+    user: state.user,
+    recalculateRemainCount: state.recalculateRemainCount,
+  }));
+
+  const throttledShowToast = useThrottle((message: string) => {
+    toast.error(message);
+  }, 1000);
 
   async function onSubmit(data: z.infer<typeof apiGenSchema>) {
+    if (!user || user?.remainCount <= 0) {
+      throttledShowToast("잔여 횟수가 없습니다.");
+      return;
+    }
     setGeneratedCode("");
     const taskId = uuidv4();
     const task: SSEEmitInputs = {
@@ -113,6 +126,7 @@ function AIApiGenContainer({}: AIApiGenContainerProps) {
       ),
       { duration: 5000 },
     );
+    recalculateRemainCount();
   }
 
   useEffect(() => {

@@ -5,7 +5,6 @@ import withDragAndDropFiles, {
   DragAndDropFilesWrappedProps,
 } from "@/hoc/withDragAndDropFiles";
 import useMenu from "@/hooks/useMenu";
-import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { cn } from "@/lib/utils/utils";
 import { useTaskListStore } from "@/store/useTaskListStore";
 import { Message } from "ai/react";
@@ -14,9 +13,12 @@ import DragAndDropAIDocsSummaryServeAgentFile from "./DragAndDropAIDocsSummarySe
 
 interface AIDocsSummaryServeAgentContainerProps
   extends DragAndDropFilesWrappedProps,
-    DragAndDropFilesComponentProps {}
+    DragAndDropFilesComponentProps {
+  url: string;
+}
 
 function AIDocsSummaryServeAgentContainer({
+  url,
   dragActive,
   inputRef,
   files,
@@ -31,8 +33,6 @@ function AIDocsSummaryServeAgentContainer({
   acceptedFileType,
   multiple = true,
 }: AIDocsSummaryServeAgentContainerProps) {
-  const url = "/ai/docs/summary-serve-agent";
-  useRequireAuth({ forwardUrl: url });
   const { title, content } = useMenu(url);
   const [messages, setMessages] = useState<Message[]>([]);
   const { getTaskByTaskType, checkNotCompletedTaskByTaskType, getBackupData } =

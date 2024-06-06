@@ -1,4 +1,5 @@
 import AIAlgorithmAdviceContainer from "@/components/AI/Code/Algorithm/AIAlgorithmAdviceContainer";
+import AuthGuard from "@/components/Auth/AuthGuard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,7 +7,12 @@ export const metadata: Metadata = {
 };
 
 function AIAlgorithmAdvicePage() {
-  return <AIAlgorithmAdviceContainer />;
+  const forwardUrl = "/ai/code/algorithm";
+  return (
+    <AuthGuard forwardUrl={forwardUrl}>
+      <AIAlgorithmAdviceContainer url={forwardUrl} />;
+    </AuthGuard>
+  );
 }
 
 export default AIAlgorithmAdvicePage;

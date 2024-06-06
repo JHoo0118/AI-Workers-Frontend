@@ -6,9 +6,9 @@ import withDragAndDropFiles, {
   DragAndDropFilesWrappedProps,
 } from "@/hoc/withDragAndDropFiles";
 import useMenu from "@/hooks/useMenu";
-import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { cn } from "@/lib/utils/utils";
 import { docsSummaryAgent } from "@/service/ai/docs/summary";
+import useUserStore from "@/store/userStore";
 import { Message } from "ai/react";
 import { FileInputIcon, Loader2 } from "lucide-react";
 import { useState } from "react";
@@ -17,9 +17,12 @@ import DragAndDropAIDocsSummaryAgentFile from "./DragAndDropAIDocsSummaryAgentFi
 
 interface AIDocsSummaryAgentContainerProps
   extends DragAndDropFilesWrappedProps,
-    DragAndDropFilesComponentProps {}
+    DragAndDropFilesComponentProps {
+  url: string;
+}
 
 function AIDocsSummaryAgentContainer({
+  url,
   dragActive,
   inputRef,
   files,
@@ -34,15 +37,18 @@ function AIDocsSummaryAgentContainer({
   acceptedFileType,
   multiple = true,
 }: AIDocsSummaryAgentContainerProps) {
-  const url = "/ai/docs/summary-agent";
-  useRequireAuth({ forwardUrl: url });
   const { title, content } = useMenu(url);
   const [loading, setLoading] = useState<boolean>(false);
   const [completedFile, setCompletedFile] = useState<boolean>(false);
   const [messages, setMessages] = useState<Message[]>([]);
+  const user = useUserStore((state) => state.user);
 
   async function handleSubmitAIDocsSummary(e: React.SyntheticEvent) {
     e.preventDefault();
+    if (!user || user?.remainCount <= 0) {
+      toast.error("잔여 횟수가 없습니다.");
+      return;
+    }
     setLoading(true);
     toast.promise(
       docsSummaryAgent(files[0].file).finally(() => setLoading(false)),

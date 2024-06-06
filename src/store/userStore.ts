@@ -5,12 +5,21 @@ interface UserState {
   user?: UserModel | undefined | null;
   setUser: (user?: UserModel) => void;
   deleteUser: () => void;
+  recalculateRemainCount: () => void;
 }
 
 const useUserStore = create<UserState>((set) => ({
   user: null,
   setUser: (user?: UserModel | undefined | null) => set({ user }),
   deleteUser: () => set({ user: null }),
+  recalculateRemainCount: () =>
+    set((state) => ({
+      user: {
+        ...state.user!,
+        remainCount:
+          state.user!.remainCount == 0 ? 0 : state.user!.remainCount - 1,
+      },
+    })),
 }));
 
 export default useUserStore;

@@ -1,4 +1,5 @@
 import AIDocsSummaryServeAgentContainer from "@/components/AI/Docs/AIDocsSummaryServeAgentContainer";
+import AuthGuard from "@/components/Auth/AuthGuard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,13 +7,17 @@ export const metadata: Metadata = {
 };
 
 function AIDocsSummaryServeAgentPage() {
+  const forwardUrl = "/ai/docs/summary-serve-agent";
   return (
-    <div className="h-full overflow-y-hidden">
-      <AIDocsSummaryServeAgentContainer
-        acceptedFileType=".pdf"
-        multiple={false}
-      />
-    </div>
+    <AuthGuard forwardUrl={forwardUrl}>
+      <div className="h-full overflow-y-hidden">
+        <AIDocsSummaryServeAgentContainer
+          acceptedFileType=".pdf"
+          multiple={false}
+          url={forwardUrl}
+        />
+      </div>
+    </AuthGuard>
   );
 }
 

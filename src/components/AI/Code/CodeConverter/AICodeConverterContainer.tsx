@@ -10,10 +10,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useMenu from "@/hooks/useMenu";
-import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { lang } from "@/lib/data/convertLang";
 import { codeConvertSchema } from "@/lib/validation/ai/code/codeConverter/codeConverterSchema";
 import { codeConvertGenerate } from "@/service/ai/code/codeConvert/codeConvert";
+import useUserStore from "@/store/userStore";
 import { CodeConvertGenereateOutputs } from "@/types/ai-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -22,11 +22,11 @@ import toast from "react-hot-toast";
 import { HashLoader } from "react-spinners";
 import { z } from "zod";
 
-interface AICodeConverterContainerProps {}
+interface AICodeConverterContainerProps {
+  url: string;
+}
 
-function AICodeConverterContainer({}: AICodeConverterContainerProps) {
-  const url = "/ai/code/codeconvert";
-  useRequireAuth({ forwardUrl: url });
+function AICodeConverterContainer({ url }: AICodeConverterContainerProps) {
   const { title, content } = useMenu(url);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [codeInput, setCodeInput] = useState<string>("");
@@ -39,6 +39,7 @@ function AICodeConverterContainer({}: AICodeConverterContainerProps) {
       targetCodeType: "java",
     },
   });
+  const { recalculateRemainCount } = useUserStore();
 
   async function onSubmit(data: z.infer<typeof codeConvertSchema>) {
     data.code = codeInput;
@@ -52,6 +53,7 @@ function AICodeConverterContainer({}: AICodeConverterContainerProps) {
     }
     setIsLoading(true);
     setTargetCodeInput("");
+    recalculateRemainCount();
     toast.promise(codeConvertGenerate(data), {
       loading: "변환 중...",
       success: (data: CodeConvertGenereateOutputs) => {

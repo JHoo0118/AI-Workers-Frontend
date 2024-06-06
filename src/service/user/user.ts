@@ -1,6 +1,10 @@
 import { fetchInterceptors } from "@/lib/utils/fetch";
 import { ProfileSchema, profileSchema } from "@/lib/validation/profileSchema";
-import { GetMeOutputs, UpdateUserOutputs } from "@/types/user-types";
+import {
+  GetMeOutputs,
+  RecalculateRemainCountOutputs,
+  UpdateUserOutputs,
+} from "@/types/user-types";
 
 export async function getMe(): Promise<GetMeOutputs> {
   return fetchInterceptors({
@@ -26,6 +30,16 @@ export async function updateUser(
     options: {
       method: "POST",
       body: JSON.stringify(parseResult.data),
+    },
+    isRequiredAccessToken: true,
+  });
+}
+
+export async function recalculateRemainCount(): Promise<RecalculateRemainCountOutputs> {
+  return fetchInterceptors({
+    url: "/py-api/user/remain",
+    options: {
+      method: "POST",
     },
     isRequiredAccessToken: true,
   });

@@ -16,11 +16,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useMenu from "@/hooks/useMenu";
-import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { framework, getLangByFramework } from "@/lib/data/framework";
 import { cn } from "@/lib/utils/utils";
 import { sqlToEntitySchema } from "@/lib/validation/ai/code/sqlEntity/sqlEntitySchema";
 import { sqlToEntity } from "@/service/ai/code/sqlEntity/sqlEntity";
+import useUserStore from "@/store/userStore";
 import { SqlToEntityOutputs } from "@/types/ai-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowDownCircleIcon } from "lucide-react";
@@ -30,11 +30,11 @@ import toast from "react-hot-toast";
 import { HashLoader } from "react-spinners";
 import { z } from "zod";
 
-interface AISqlEntityContainerProps {}
+interface AISqlEntityContainerProps {
+  url: string;
+}
 
-function AISqlEntityContainer({}: AISqlEntityContainerProps) {
-  const url = "/ai/code/sqlentity";
-  useRequireAuth({ forwardUrl: url });
+function AISqlEntityContainer({ url }: AISqlEntityContainerProps) {
   const { title, content } = useMenu(url);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [sqlInput, setSqlInput] = useState<string>("");
@@ -46,6 +46,7 @@ function AISqlEntityContainer({}: AISqlEntityContainerProps) {
       framework: "FastAPI",
     },
   });
+  const { recalculateRemainCount } = useUserStore();
   const resultSectionRef = useRef<HTMLDivElement>(null);
 
   async function onSubmit(data: z.infer<typeof sqlToEntitySchema>) {
@@ -56,6 +57,7 @@ function AISqlEntityContainer({}: AISqlEntityContainerProps) {
     }
     setIsLoading(true);
     setGeneratedCode("");
+    recalculateRemainCount();
     toast.promise(sqlToEntity(data), {
       loading: "생성 중입니다...",
       success: (data: SqlToEntityOutputs) => {

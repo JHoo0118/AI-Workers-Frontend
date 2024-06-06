@@ -5,26 +5,27 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ACCESS_TOKEN } from "@/const/const";
 import useMenu from "@/hooks/useMenu";
-import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { isAuthenticated } from "@/lib/utils/auth";
 import { cn } from "@/lib/utils/utils";
 import { refreshTokens } from "@/service/auth/auth";
+import useUserStore from "@/store/userStore";
 import { ChatRequestOptions } from "ai";
 import { Message, useChat } from "ai/react";
 import { getCookie } from "cookies-next";
 import { StopCircleIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-interface AIAlgorithmAdviceContainerProps {}
+interface AIAlgorithmAdviceContainerProps {
+  url: string;
+}
 
-function AIAlgorithmAdviceContainer({}: AIAlgorithmAdviceContainerProps) {
-  const url = "/ai/code/algorithm";
-  useRequireAuth({ forwardUrl: url });
+function AIAlgorithmAdviceContainer({ url }: AIAlgorithmAdviceContainerProps) {
   const { title, content } = useMenu(url);
   const [loading, setLoading] = useState<boolean>(false);
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const [lang, setLang] = useState<string>("python");
   const [hasUserScrolled, setHasUserScrolled] = useState(false);
+  const { recalculateRemainCount } = useUserStore();
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -47,6 +48,7 @@ function AIAlgorithmAdviceContainer({}: AIAlgorithmAdviceContainerProps) {
             },
           },
         });
+        recalculateRemainCount();
       } else {
         throw error?.message || "오류가 발생했습니다.";
       }
@@ -73,6 +75,7 @@ function AIAlgorithmAdviceContainer({}: AIAlgorithmAdviceContainerProps) {
       lang,
     },
     onError: (error: Error) => {
+      console.log(error.message);
       setIsStreaming(false);
     },
     onResponse: async (response) => {
@@ -165,7 +168,10 @@ function AIAlgorithmAdviceContainer({}: AIAlgorithmAdviceContainerProps) {
               <ChatMessage
                 message={{
                   role: "assistant",
-                  content: "오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",
+                  content:
+                    error && error.message
+                      ? JSON.parse(error!.message).detail
+                      : "오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",
                 }}
               />
             )}

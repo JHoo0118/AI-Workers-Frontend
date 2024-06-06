@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
-import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { deleteTokens } from "@/lib/utils/auth";
 import { deleteUser } from "@/service/auth/auth";
 import useUserStore from "@/store/userStore";
@@ -22,13 +21,12 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 export default function LeaveContainer() {
-  useRequireAuth({ forwardUrl: "/account/settings" });
   const { setUser } = useUserStore();
   const { renewalUser } = useAuth();
   const user = useUserStore((state) => state.user);
   const [confirmText, setConfirmText] = useState<string>("");
   const [disabled, setDisabled] = useState<boolean>(true);
-  const router = useRouter()
+  const router = useRouter();
   const locale = useLocale();
 
   const onSubmit = async () => {

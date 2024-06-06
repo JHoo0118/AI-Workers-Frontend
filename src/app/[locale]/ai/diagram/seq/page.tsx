@@ -1,4 +1,5 @@
 import AISequenceDiagramContainer from "@/components/AI/Diagram/SequenceDiagram/AISequenceDiagramContainer";
+import AuthGuard from "@/components/Auth/AuthGuard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,7 +7,12 @@ export const metadata: Metadata = {
 };
 
 function AIErdPage() {
-  return <AISequenceDiagramContainer />;
+  const forwardUrl = "/ai/diagram/seq";
+  return (
+    <AuthGuard forwardUrl={forwardUrl}>
+      <AISequenceDiagramContainer url={forwardUrl} />
+    </AuthGuard>
+  );
 }
 
 export default AIErdPage;

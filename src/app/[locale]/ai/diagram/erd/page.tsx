@@ -1,4 +1,5 @@
 import AIErdContainer from "@/components/AI/Diagram/Erd/AIErdContainer";
+import AuthGuard from "@/components/Auth/AuthGuard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,7 +7,12 @@ export const metadata: Metadata = {
 };
 
 function AIErdPage() {
-  return <AIErdContainer />;
+  const forwardUrl = "/ai/diagram/erd";
+  return (
+    <AuthGuard forwardUrl={forwardUrl}>
+      <AIErdContainer url={forwardUrl} />
+    </AuthGuard>
+  );
 }
 
 export default AIErdPage;

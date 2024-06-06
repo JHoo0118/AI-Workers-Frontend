@@ -4,10 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormItem, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import useMenu from "@/hooks/useMenu";
-import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { CryptoUtils } from "@/lib/utils/crypto";
 import { sequenceDiagramSchema } from "@/lib/validation/ai/diagram/seq/seqDiagramSchema";
 import { sequenceDiagramGenerate } from "@/service/ai/diagram/seq/seq";
+import useUserStore from "@/store/userStore";
 import { SeqDiagramGenerateOutputs } from "@/types/ai-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocale } from "next-intl";
@@ -17,11 +17,11 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-interface AISequenceDiagramContainerProps {}
+interface AISequenceDiagramContainerProps {
+  url: string;
+}
 
-function AISequenceDiagramContainer({}: AISequenceDiagramContainerProps) {
-  const url = "/ai/diagram/seq";
-  useRequireAuth({ forwardUrl: url });
+function AISequenceDiagramContainer({ url }: AISequenceDiagramContainerProps) {
   const locale = useLocale();
   const { title, content } = useMenu(url);
   const router = useRouter();
@@ -32,9 +32,11 @@ function AISequenceDiagramContainer({}: AISequenceDiagramContainerProps) {
       request: "",
     },
   });
+  const { recalculateRemainCount } = useUserStore();
 
   async function onSubmit(data: z.infer<typeof sequenceDiagramSchema>) {
     setIsLoading(true);
+    recalculateRemainCount();
     toast.promise(sequenceDiagramGenerate(data), {
       loading: "생성 중...",
       success: (data: SeqDiagramGenerateOutputs) => {

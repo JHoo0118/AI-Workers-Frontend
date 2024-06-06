@@ -14,10 +14,12 @@ import { Input } from "@/components/ui/input";
 import { TASK_AI_DOCS_SUMMARY_SERVE } from "@/const/const";
 import { AcceptedFile } from "@/hoc/withDragAndDropFiles";
 import useManageTaskEventSource from "@/hooks/useManageTaskEventSource";
+import { useThrottle } from "@/hooks/useThrottle";
 import { cn } from "@/lib/utils/utils";
 import { docsServeSummaryEmbed } from "@/service/ai/docs/summary";
 import { sseEmit } from "@/service/sse/sse";
 import { useTaskListStore } from "@/store/useTaskListStore";
+import useUserStore from "@/store/userStore";
 import { DocsServeAgentResponse } from "@/types/ai-types";
 import { SSEEmitInputs } from "@/types/sse-types";
 import { Message } from "ai/react";
@@ -80,13 +82,27 @@ function DragAndDropAIDocsSummaryServeAgentFile({
   const [content, setContent] = useState<
     DocsServeAgentResponse[] | undefined | null
   >(undefined);
+  const throttledShowToast = useThrottle((message: string) => {
+    toast.error(message);
+  }, 1000);
+
+  const { user, recalculateRemainCount } = useUserStore((state) => ({
+    user: state.user,
+    recalculateRemainCount: state.recalculateRemainCount,
+  }));
 
   const formRef = useRef<HTMLFormElement>(null);
 
   async function handleSubmitAIDocsSummary(e: React.SyntheticEvent) {
     e.preventDefault();
+    if (!user || user?.remainCount <= 0) {
+      throttledShowToast("잔여 횟수가 없습니다.");
+      return;
+    }
     if (numPages > 5) {
-      toast.error("현재 요약 기능은 총 5페이지 이하의 PDF 파일만 가능합니다.");
+      throttledShowToast(
+        "현재 요약 기능은 총 5페이지 이하의 PDF 파일만 가능합니다.",
+      );
       return;
     }
     const taskId = uuidv4();
@@ -95,6 +111,7 @@ function DragAndDropAIDocsSummaryServeAgentFile({
     toast.success(() => <b>잠시만 기다려주세요...작업을 준비합니다.</b>);
     const { path } = await docsServeSummaryEmbed(files[0].file);
     removeCache();
+    recalculateRemainCount();
     const task: SSEEmitInputs = {
       taskId: taskId,
       taskType: TASK_AI_DOCS_SUMMARY_SERVE,

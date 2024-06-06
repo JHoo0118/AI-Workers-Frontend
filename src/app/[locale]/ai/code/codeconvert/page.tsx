@@ -1,4 +1,5 @@
 import AICodeConverterContainer from "@/components/AI/Code/CodeConverter/AICodeConverterContainer";
+import AuthGuard from "@/components/Auth/AuthGuard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,7 +7,12 @@ export const metadata: Metadata = {
 };
 
 function AICodeConverter() {
-  return <AICodeConverterContainer />;
+  const forwardUrl = "/ai/code/codeconvert";
+  return (
+    <AuthGuard forwardUrl={forwardUrl}>
+      <AICodeConverterContainer url={forwardUrl} />
+    </AuthGuard>
+  );
 }
 
 export default AICodeConverter;

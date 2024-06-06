@@ -1,4 +1,5 @@
 import AISqlEntityContainer from "@/components/AI/Code/SqlEntity/AISqlEntityContainer";
+import AuthGuard from "@/components/Auth/AuthGuard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,7 +7,12 @@ export const metadata: Metadata = {
 };
 
 function AISqlEntityPage() {
-  return <AISqlEntityContainer />;
+  const forwardUrl = "/ai/code/sqlentity";
+  return (
+    <AuthGuard forwardUrl={forwardUrl}>
+      <AISqlEntityContainer url={forwardUrl} />
+    </AuthGuard>
+  );
 }
 
 export default AISqlEntityPage;

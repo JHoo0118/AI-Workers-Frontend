@@ -8,6 +8,7 @@ import { AcceptedFile } from "@/hoc/withDragAndDropFiles";
 import { isAuthenticated } from "@/lib/utils/auth";
 import { cn } from "@/lib/utils/utils";
 import { refreshTokens } from "@/service/auth/auth";
+import useUserStore from "@/store/userStore";
 import { ChatRequestOptions } from "ai";
 import { Message, useChat } from "ai/react";
 import { getCookie } from "cookies-next";
@@ -48,6 +49,7 @@ function DragAndDropAIDocsSummaryFile({
 }: DragAndDropAIDocsSummaryFileProps) {
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const [hasUserScrolled, setHasUserScrolled] = useState(false);
+  const { recalculateRemainCount } = useUserStore();
 
   async function handleSubmitWrapper(
     e: React.FormEvent<HTMLFormElement>,
@@ -68,6 +70,7 @@ function DragAndDropAIDocsSummaryFile({
             },
           },
         });
+        recalculateRemainCount();
       } else {
         throw error?.message || "오류가 발생했습니다.";
       }
@@ -168,7 +171,9 @@ function DragAndDropAIDocsSummaryFile({
                       message={{
                         role: "assistant",
                         content:
-                          "오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",
+                          error && error.message
+                            ? JSON.parse(error!.message).detail
+                            : "오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",
                       }}
                       // isError={
                       //   <Button

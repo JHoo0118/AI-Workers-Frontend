@@ -51,7 +51,6 @@ export async function fetchInterceptors({
   try {
     let res = await fetch(url, options);
 
-    // If token expired, refresh it
     if (res.status === 409) {
       if (!refreshTokenPromise) {
         refreshTokenPromise = refreshTokens();
@@ -59,13 +58,11 @@ export async function fetchInterceptors({
         refreshTokenPromise = null;
       }
 
-      // Update Authorization header with new token
       options.headers = {
         ...options.headers,
         Authorization: `Bearer ${getCookie(ACCESS_TOKEN)}`,
       };
 
-      // Retry the fetch with the new token
       res = await fetch(url, options);
     }
 
@@ -81,7 +78,6 @@ export async function fetchInterceptors({
       throw new Error(`HTTP error, status = ${res.status}`);
     }
 
-    // Return the response based on the expected return type
     if (returnType === ReturnType.BLOB) {
       return await res.blob();
     }
@@ -116,11 +112,9 @@ export async function fetchStreamInterceptors({
     }),
   };
 
-  console.log(options.headers);
   try {
     let res = await fetch(url, options);
 
-    // If token expired, refresh it
     if (res.status === 409) {
       if (!refreshTokenPromise) {
         refreshTokenPromise = refreshTokens();
@@ -128,13 +122,11 @@ export async function fetchStreamInterceptors({
         refreshTokenPromise = null;
       }
 
-      // Update Authorization header with new token
       options.headers = {
         ...options.headers,
         Authorization: `Bearer ${getCookie(ACCESS_TOKEN)}`,
       };
 
-      // Retry the fetch with the new token
       res = await fetch(url, options);
     }
 
@@ -150,13 +142,11 @@ export async function fetchStreamInterceptors({
       throw new Error(`HTTP error, status = ${res.status}`);
     }
 
-    // Return the response based on the expected return type
     const stream = res.body;
     const reader = stream?.getReader();
 
     console.log(stream, reader);
 
-    // Define the asynchronous readChunk function
     const readChunk = async () => {
       try {
         let { value, done }: any = await reader?.read();
@@ -172,7 +162,6 @@ export async function fetchStreamInterceptors({
       }
     };
 
-    // Start reading the first chunk
     await readChunk();
   } catch (error: any) {
     throw error?.message || "오류가 발생했습니다.";

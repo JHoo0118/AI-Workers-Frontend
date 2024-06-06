@@ -1,5 +1,6 @@
 import LeaveContainer from "@/components/Account/Settings/LeaveContainer";
 import SettingsContainer from "@/components/Account/Settings/SettingsContainer";
+import AuthGuard from "@/components/Auth/AuthGuard";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,12 +12,15 @@ export const metadata: Metadata = {
 };
 
 export default function SettingsPage() {
+  const forwardUrl = "/account/settings";
   return (
-    <div>
-      <h3>details</h3>
-      <SettingsContainer />
-      <h3 className="mt-10">leave</h3>
-      <LeaveContainer />
-    </div>
+    <AuthGuard forwardUrl={forwardUrl}>
+      <div>
+        <h3>details</h3>
+        <SettingsContainer />
+        <h3 className="mt-10">leave</h3>
+        <LeaveContainer />
+      </div>
+    </AuthGuard>
   );
 }

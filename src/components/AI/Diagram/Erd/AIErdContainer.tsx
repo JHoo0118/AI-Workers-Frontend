@@ -4,10 +4,10 @@ import Loading from "@/components/Loading/Loading";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormItem, FormMessage } from "@/components/ui/form";
 import useMenu from "@/hooks/useMenu";
-import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { CryptoUtils } from "@/lib/utils/crypto";
 import { erdSchema } from "@/lib/validation/ai/diagram/erd/erdSchema";
 import { erdGenerate } from "@/service/ai/diagram/erd/erd";
+import useUserStore from "@/store/userStore";
 import { ErdGenereateOutputs } from "@/types/ai-types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocale } from "next-intl";
@@ -17,16 +17,17 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-interface AIErdContainerProps {}
+interface AIErdContainerProps {
+  url: string;
+}
 
-function AIErdContainer({}: AIErdContainerProps) {
-  const url = "/ai/diagram/erd";
-  useRequireAuth({ forwardUrl: url });
+function AIErdContainer({ url }: AIErdContainerProps) {
   const locale = useLocale();
   const { title, content } = useMenu(url);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [queryInput, setQueryInput] = useState<string>("");
+  const { recalculateRemainCount } = useUserStore();
   const form = useForm<z.infer<typeof erdSchema>>({
     resolver: zodResolver(erdSchema),
     defaultValues: {
@@ -47,8 +48,10 @@ function AIErdContainer({}: AIErdContainerProps) {
 
     if (!regex.test(data.query)) {
       toast.error("올바른 형태로 입력해 주세요.");
+      return;
     }
     setIsLoading(true);
+    recalculateRemainCount();
     toast.promise(erdGenerate(data), {
       loading: "생성 중...",
       success: (data: ErdGenereateOutputs) => {
