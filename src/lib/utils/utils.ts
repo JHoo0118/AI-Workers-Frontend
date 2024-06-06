@@ -1,4 +1,6 @@
+import { fileDonwload } from "@/service/file/file";
 import { clsx, type ClassValue } from "clsx";
+import toast from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -34,4 +36,67 @@ export function stopPropagate(callback: () => void) {
     e.stopPropagation();
     callback();
   };
+}
+
+export async function fileDownload({
+  filename,
+  setLoading,
+  setProgress,
+}: {
+  filename: string;
+  setLoading: (loading: boolean) => void;
+  setProgress: (progress: number) => void;
+}) {
+  setLoading(true);
+  setProgress(0);
+  const toastId = toast.loading("다운로드 중... 0%");
+  try {
+    const response = await fileDonwload({ filename });
+    const contentLength = response.headers.get("Content-Length");
+    if (!contentLength) {
+      setLoading(false);
+      throw new Error("Content-Length header is missing");
+    }
+
+    const totalLength = parseInt(contentLength, 10);
+    const reader = response.body?.getReader();
+    let receivedLength = 0;
+    const chunks = [];
+    while (true) {
+      const { done, value } = await reader?.read()!;
+
+      if (done) {
+        break;
+      }
+
+      chunks.push(value);
+      receivedLength += value.length;
+
+      const progress = (receivedLength / totalLength) * 100;
+      setProgress(progress);
+      toast.loading(`다운로드 중... ${Math.round(progress)}%`, { id: toastId });
+    }
+
+    const blob = new Blob(chunks);
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const pFilename = decodeURIComponentHelper(filename);
+
+    link.href = url;
+    link.download = `${pFilename}`;
+    link.click();
+    window.URL.revokeObjectURL(url);
+    toast.success("다운로드가 완료되었습니다.", {
+      id: toastId,
+      duration: 3000,
+    });
+  } catch (error) {
+    toast.error("다운로드 중 오류가 발생했습니다.", {
+      id: toastId,
+      duration: 3000,
+    });
+  } finally {
+    setLoading(false);
+    // toast.dismiss(toastId);
+  }
 }

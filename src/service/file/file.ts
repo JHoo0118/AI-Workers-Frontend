@@ -1,4 +1,8 @@
-import { ReturnType, fetchInterceptors } from "@/lib/utils/fetch";
+import {
+  ReturnType,
+  fetchDownloadInterceptors,
+  fetchInterceptors,
+} from "@/lib/utils/fetch";
 import { FileDonwloadInputs } from "@/types/file-types";
 
 export async function filePublicDelete({
@@ -14,8 +18,8 @@ export async function filePublicDelete({
 
 export async function fileDonwload({
   filename,
-}: FileDonwloadInputs): Promise<Blob> {
-  return fetchInterceptors({
+}: FileDonwloadInputs): Promise<Response> {
+  return fetchDownloadInterceptors({
     url: `/py-api/file/download/${filename}`,
     options: {
       method: "GET",

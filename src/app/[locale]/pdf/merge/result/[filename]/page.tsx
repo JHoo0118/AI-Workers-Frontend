@@ -1,11 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { cn, decodeURIComponentHelper } from "@/lib/utils/utils";
-import { fileDonwload, filePublicDelete } from "@/service/file/file";
+import { cn, fileDownload } from "@/lib/utils/utils";
+import { filePublicDelete } from "@/service/file/file";
 import { IsFileExistOutputs } from "@/types/file-types";
 import { ArrowLeftCircle, Download, Trash2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import useSWR from "swr";
 
@@ -21,6 +22,8 @@ export default function PdfMergeResultPage({
     `/py-api/file/exist?filename=${filename}`,
     { errorRetryCount: 2 },
   );
+  const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   function onClickBackButton() {
     router.back();
@@ -41,17 +44,11 @@ export default function PdfMergeResultPage({
   }
 
   async function handleSubmitDownloadPdfFiles() {
-    const blob = await fileDonwload({
+    await fileDownload({
       filename,
+      setLoading,
+      setProgress,
     });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    const pFilename = decodeURIComponentHelper(filename);
-
-    link.href = url;
-    link.download = `${pFilename}`;
-    link.click();
-    window.URL.revokeObjectURL(url);
   }
 
   return (

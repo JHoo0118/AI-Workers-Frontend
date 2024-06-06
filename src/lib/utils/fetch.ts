@@ -167,3 +167,65 @@ export async function fetchStreamInterceptors({
     throw error?.message || "오류가 발생했습니다.";
   }
 }
+
+export async function fetchDownloadInterceptors({
+  url,
+  options = {},
+  returnType = ReturnType.JSON,
+  isRequiredAccessToken = false,
+  isMultipart = false,
+}: FetchArgs) {
+  const defaultHeaders = {
+    "Content-Type": "application/json",
+  };
+
+  const originHeaders = options.headers ?? new Headers();
+
+  if (isRequiredAccessToken && !hasCookie(ACCESS_TOKEN)) {
+    throw new Error("인증에 실패했습니다.");
+  }
+
+  options.headers = {
+    ...(originHeaders && { ...originHeaders }),
+    ...(!Object.prototype.hasOwnProperty.call(originHeaders, "Content-Type") &&
+      !isMultipart && { ...defaultHeaders }),
+    ...(isRequiredAccessToken && {
+      Authorization: `Bearer ${getCookie(ACCESS_TOKEN)}`,
+    }),
+  };
+
+  try {
+    let res = await fetch(url, options);
+
+    if (res.status === 409) {
+      if (!refreshTokenPromise) {
+        refreshTokenPromise = refreshTokens();
+        await refreshTokenPromise;
+        refreshTokenPromise = null;
+      }
+
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${getCookie(ACCESS_TOKEN)}`,
+      };
+
+      res = await fetch(url, options);
+    }
+
+    if (!res.ok) {
+      const errorResp = await res.json().catch((e) => "오류가 발생했습니다.");
+      if (errorResp.hasOwnProperty("detail")) {
+        throw new Error(
+          typeof errorResp["detail"] === "string"
+            ? errorResp["detail"]
+            : "오류가 발생했습니다.",
+        );
+      }
+      throw new Error(`HTTP error, status = ${res.status}`);
+    }
+
+    return res;
+  } catch (error: any) {
+    throw error?.message || "오류가 발생했습니다.";
+  }
+}

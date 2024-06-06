@@ -41,6 +41,7 @@ import { CopyCheckIcon, CopyIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { useResizeDetector } from "react-resize-detector";
 import { Button } from "../ui/button";
 
 const MAX_LENGTH = 4000;
@@ -103,6 +104,12 @@ const CodeEditor = ({
     toast.success("성공적으로 복사되었습니다.");
   }
 
+  const {
+    width: resizedWidth,
+    height: resizedHeight,
+    ref,
+  } = useResizeDetector();
+
   return (
     <div className="group relative w-full">
       <div className="absolute right-2 top-2 z-10 opacity-100 transition-opacity group-hover:opacity-100">
@@ -119,31 +126,33 @@ const CodeEditor = ({
           )}
         </Button>
       </div>
-      <AceEditor
-        ref={aceEditorRef}
-        readOnly={readOnly}
-        className={className}
-        mode={language.toLowerCase()}
-        width="100%"
-        height={height}
-        theme={theme === "dark" ? "tomorrow_night_eighties" : "chrome"}
-        name="UNIQUE_ID_OF_DIV"
-        value={value}
-        placeholder={placeholder}
-        onChange={handleEditorChange}
-        fontSize={14}
-        showPrintMargin={true}
-        showGutter={true}
-        editorProps={{ $blockScrolling: true }}
-        highlightActiveLine={true}
-        setOptions={{
-          enableBasicAutocompletion: true,
-          enableLiveAutocompletion: true,
-          enableSnippets: true,
-          showLineNumbers: true,
-          tabSize: 2,
-        }}
-      />
+      <div ref={ref} className="w-full">
+        <AceEditor
+          ref={aceEditorRef}
+          readOnly={readOnly}
+          className={className}
+          mode={language.toLowerCase()}
+          width="100%"
+          height={height}
+          theme={theme === "dark" ? "tomorrow_night_eighties" : "chrome"}
+          name="UNIQUE_ID_OF_DIV"
+          value={value}
+          placeholder={placeholder}
+          onChange={handleEditorChange}
+          fontSize={14}
+          showPrintMargin={true}
+          showGutter={true}
+          editorProps={{ $blockScrolling: true }}
+          highlightActiveLine={true}
+          setOptions={{
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
+            enableSnippets: true,
+            showLineNumbers: true,
+            tabSize: 2,
+          }}
+        />
+      </div>
     </div>
   );
 };

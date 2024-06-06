@@ -18,6 +18,7 @@ import { useThrottle } from "@/hooks/useThrottle";
 import { cn } from "@/lib/utils/utils";
 import { docsServeSummaryEmbed } from "@/service/ai/docs/summary";
 import { sseEmit } from "@/service/sse/sse";
+import { recalculateRemainCountManually } from "@/service/user/user";
 import { useTaskListStore } from "@/store/useTaskListStore";
 import useUserStore from "@/store/userStore";
 import { DocsServeAgentResponse } from "@/types/ai-types";
@@ -111,7 +112,9 @@ function DragAndDropAIDocsSummaryServeAgentFile({
     toast.success(() => <b>잠시만 기다려주세요...작업을 준비합니다.</b>);
     const { path } = await docsServeSummaryEmbed(files[0].file);
     removeCache();
-    recalculateRemainCount();
+
+    recalculateRemainCountManually().then(() => recalculateRemainCount());
+
     const task: SSEEmitInputs = {
       taskId: taskId,
       taskType: TASK_AI_DOCS_SUMMARY_SERVE,

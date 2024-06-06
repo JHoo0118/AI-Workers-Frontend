@@ -35,7 +35,7 @@ export async function updateUser(
   });
 }
 
-export async function recalculateRemainCount(): Promise<RecalculateRemainCountOutputs> {
+export async function recalculateRemainCountManually(): Promise<RecalculateRemainCountOutputs> {
   return fetchInterceptors({
     url: "/py-api/user/remain",
     options: {

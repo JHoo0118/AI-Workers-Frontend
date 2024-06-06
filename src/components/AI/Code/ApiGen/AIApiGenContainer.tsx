@@ -24,6 +24,7 @@ import { framework, getLangByFramework } from "@/lib/data/framework";
 import { cn } from "@/lib/utils/utils";
 import { apiGenSchema } from "@/lib/validation/ai/code/apiGen/apiGenSchema";
 import { sseEmit } from "@/service/sse/sse";
+import { recalculateRemainCountManually } from "@/service/user/user";
 import useDrawerStore from "@/store/useDrawerStore";
 import { useTaskListStore } from "@/store/useTaskListStore";
 import useUserStore from "@/store/userStore";
@@ -48,8 +49,10 @@ function AIApiGenContainer({ url }: AIApiGenContainerProps) {
     setTaskList,
     getTaskByTaskType,
     checkNotCompletedTaskByTaskType,
+    getBackupData,
     removeTaskByTaskType,
     removeEventSource,
+    setBackupData,
     removeBackupData,
     removeBackupDataByTaskType,
   } = useTaskListStore();
@@ -96,6 +99,7 @@ function AIApiGenContainer({ url }: AIApiGenContainerProps) {
       ...taskList.filter((task) => task.taskType !== TASK_AI_API_GEN),
     ]);
     setTaskId(taskId);
+    setBackupData(taskId, data);
     setIsLoading(true);
     // toast.success("작업을 진행합니다.");
     toast(
@@ -126,7 +130,7 @@ function AIApiGenContainer({ url }: AIApiGenContainerProps) {
       ),
       { duration: 5000 },
     );
-    recalculateRemainCount();
+    recalculateRemainCountManually().then(() => recalculateRemainCount());
   }
 
   useEffect(() => {
@@ -143,6 +147,22 @@ function AIApiGenContainer({ url }: AIApiGenContainerProps) {
       setIsLoading(false);
     }
   }, [taskList, checkNotCompletedTaskByTaskType]);
+
+  useEffect(() => {
+    const task = getTaskByTaskType(TASK_AI_API_GEN);
+    if (!task) {
+      return;
+    }
+    const taskId = task!.taskId;
+    const data = getBackupData(taskId);
+    if (!!data) {
+      const { input, framework } = data;
+      setTimeout(() => {
+        form.setValue("input", input);
+        form.setValue("framework", framework);
+      });
+    }
+  }, [getBackupData, getTaskByTaskType, form]);
 
   useManageTaskEventSource(taskId);
 
@@ -175,6 +195,7 @@ function AIApiGenContainer({ url }: AIApiGenContainerProps) {
                   <FormItem className="mb-2 w-1/2">
                     <Select
                       onValueChange={field.onChange}
+                      value={field.value}
                       defaultValue={field.value}
                     >
                       <FormControl>
@@ -239,22 +260,24 @@ function AIApiGenContainer({ url }: AIApiGenContainerProps) {
           )}
         </div>
       </div>
-      <section
-        ref={resultSectionRef}
-        className={cn(
-          "h-screen-nav",
-          generatedCode.trim().length === 0 && "hidden",
-        )}
-      >
-        <div className="m-auto flex h-full w-full md:items-center lg:w-2/3">
-          <CodeEditor
-            height="42rem"
-            readOnly={true}
-            language={getLangByFramework(form.getValues("framework"))}
-            value={generatedCode}
-          />
-        </div>
-      </section>
+      {form.getValues("framework") && (
+        <section
+          ref={resultSectionRef}
+          className={cn(
+            "h-screen-nav",
+            generatedCode.trim().length === 0 && "hidden",
+          )}
+        >
+          <div className="m-auto flex h-full w-full md:items-center lg:w-3/4">
+            <CodeEditor
+              height="42rem"
+              readOnly={true}
+              language={getLangByFramework(form.getValues("framework"))}
+              value={generatedCode}
+            />
+          </div>
+        </section>
+      )}
     </>
   );
 }
