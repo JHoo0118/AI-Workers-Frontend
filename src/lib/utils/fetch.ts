@@ -29,24 +29,32 @@ export async function fetchInterceptors({
   isRequiredAccessToken = false,
   isMultipart = false,
 }: FetchArgs) {
-  const defaultHeaders = {
+  const defaultHeaders: HeadersInit = {
     "Content-Type": "application/json",
   };
+  let originHeaders: HeadersInit;
 
-  const originHeaders = options.headers ?? new Headers();
+  if (options.headers instanceof Headers) {
+    originHeaders = Object.fromEntries(options.headers.entries());
+  } else if (options.headers) {
+    originHeaders = options.headers as HeadersInit;
+  } else {
+    originHeaders = {};
+  }
 
   if (isRequiredAccessToken && !hasCookie(ACCESS_TOKEN)) {
     throw new Error("인증에 실패했습니다.");
   }
 
-  options.headers = {
-    ...(originHeaders && { ...originHeaders }),
-    ...(!Object.prototype.hasOwnProperty.call(originHeaders, "Content-Type") &&
-      !isMultipart && { ...defaultHeaders }),
+  const headers: HeadersInit = {
+    ...originHeaders,
+    ...(!("Content-Type" in originHeaders) && !isMultipart && defaultHeaders),
     ...(isRequiredAccessToken && {
       Authorization: `Bearer ${getCookie(ACCESS_TOKEN)}`,
     }),
   };
+
+  options.headers = headers;
 
   try {
     let res = await fetch(url, options);
@@ -92,25 +100,32 @@ export async function fetchStreamInterceptors({
   options = {},
   isRequiredAccessToken = false,
 }: FetchStreamArgs) {
-  const originHeaders = options.headers ?? new Headers();
+  let originHeaders: HeadersInit;
+
+  if (options.headers instanceof Headers) {
+    originHeaders = Object.fromEntries(options.headers.entries());
+  } else if (options.headers) {
+    originHeaders = options.headers as HeadersInit;
+  } else {
+    originHeaders = {};
+  }
 
   if (isRequiredAccessToken && !hasCookie(ACCESS_TOKEN)) {
     throw new Error("인증에 실패했습니다.");
   }
 
-  options.headers = {
+  const headers: HeadersInit = {
     ...(originHeaders && { ...originHeaders }),
-    ...(!Object.prototype.hasOwnProperty.call(
-      originHeaders,
-      "Content-Type",
-    ) && { "Content-Type": "application/json" }),
-    ...(!Object.prototype.hasOwnProperty.call(originHeaders, "Accept") && {
-      Accept: "text/event-stream",
+    ...(!("Content-Type" in originHeaders) && {
+      "Content-Type": "application/json",
     }),
+    ...(!("Accept" in originHeaders) && { Accept: "text/event-stream" }),
     ...(isRequiredAccessToken && {
       Authorization: `Bearer ${getCookie(ACCESS_TOKEN)}`,
     }),
   };
+
+  options.headers = headers;
 
   try {
     let res = await fetch(url, options);
