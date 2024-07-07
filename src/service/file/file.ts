@@ -3,7 +3,11 @@ import {
   fetchDownloadInterceptors,
   fetchInterceptors,
 } from "@/lib/utils/fetch";
-import { FileDonwloadInputs } from "@/types/file-types";
+import {
+  FileDonwloadInputs,
+  IsFileExistInputs,
+  IsFileExistOutputs,
+} from "@/types/file-types";
 
 export async function filePublicDelete({
   filename,
@@ -25,5 +29,16 @@ export async function fileDonwload({
       method: "GET",
     },
     returnType: ReturnType.BLOB,
+  });
+}
+
+export async function fetchFileExistenceSSR({
+  filename,
+}: IsFileExistInputs): Promise<IsFileExistOutputs> {
+  return fetchInterceptors({
+    url: `${process.env.NEXT_PUBLIC_BASE_API_URL}/api/file/exist?filename=${filename}`,
+    options: {
+      method: "GET",
+    },
   });
 }

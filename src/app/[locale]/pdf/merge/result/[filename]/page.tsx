@@ -1,6 +1,6 @@
 import PdfMergeResultContainer from "@/components/Pdf/PdfMergeResultContainer";
+import { fetchFileExistenceSSR } from "@/service/file/file";
 import { Metadata } from "next";
-import { fetchFileExistence } from "../../../layout";
 
 export const metadata: Metadata = {
   title: "PDF 병합 결과",
@@ -13,7 +13,7 @@ interface PdfMergeResultPageProps {
 export default async function PdfMergeResultPage({
   params: { filename },
 }: PdfMergeResultPageProps) {
-  const fallbackData = await fetchFileExistence(filename);
+  const fallbackData = await fetchFileExistenceSSR({ filename });
 
   return (
     <div className="flex h-full flex-col items-center p-10">
