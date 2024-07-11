@@ -3,7 +3,7 @@ import { create } from "zustand";
 
 interface UserState {
   user?: UserModel | undefined | null;
-  setUser: (user?: UserModel) => void;
+  setUser: (user?: UserModel | null) => void;
   deleteUser: () => void;
   recalculateRemainCount: () => void;
 }
