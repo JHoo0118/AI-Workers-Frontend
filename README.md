@@ -4,7 +4,6 @@
   <img src="readme-images/main.png" alt="메인 이미지" width="100%" />
 </div>
 
-[**접속 주소**](https://smartaiworkers.com/) |
 [**동영상 링크**](https://vimeo.com/979660172)
 
 ## 목차
